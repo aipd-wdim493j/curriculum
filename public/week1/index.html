@@ -1,0 +1,253 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+        <title>WDIM493J Node.js &mdash; Week 1</title>
+        <!-- Slippy core file and dependencies -->
+        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.min.js"></script>
+        <script type="text/javascript" src="../lib/slippy/src/jquery.history.js"></script>
+        <script type="text/javascript" src="../lib/slippy/src/slippy.js"></script>
+        <!-- Slippy structural styles -->
+        <link type="text/css" rel="stylesheet" href="../lib/slippy/src/slippy.css"/>
+        <!-- Syntax highlighting core file  -->
+        <script type="text/javascript" src="../lib/slippy/src/highlighter/shCore.js"></script>
+        <!-- Syntax highlighting brushes, remove those you don't need -->
+        <script type="text/javascript" src="../lib/slippy/src/highlighter/shBrushBash.js"></script>
+        <script type="text/javascript" src="../lib/slippy/src/highlighter/shBrushCss.js"></script>
+        <script type="text/javascript" src="../lib/slippy/src/highlighter/shBrushJScript.js"></script>
+        <script type="text/javascript" src="../lib/slippy/src/highlighter/shBrushXml.js"></script>
+        <!-- Syntax highlighting styles-->
+        <link type="text/css" rel="stylesheet" href="../lib/slippy/src/highlighter/shCore.css"/>
+        <link type="text/css" rel="stylesheet" href="../lib/slippy/src/highlighter/shThemeRDark.css"/>
+
+
+        <!-- Common Styles -->
+        <link href="http://fonts.googleapis.com/css?family=Terminal+Dosis+Light:regular&v1" rel="stylesheet" type="text/css" >
+        <link type="text/css" rel="stylesheet" href="../css/slippy-wdim.css" />
+    </head>
+    <body>
+        <div class="slide title" data-layout="title">
+            <h1>Node.js</h1>
+            <h2>Week 1</h2>
+        </div>
+        
+        <div class="slide">
+            <h1>Me!</h1>
+            <ul>
+                <li><a href="https://twitter.com/peterwooley/statuses/10737203748">First exposure to Node.js in March 2010</a>.</li>
+                <li><a href="http://twitter.com/peterwooley/statuses/14378519684">I finally played with it in May 2010</a></li>
+                <li><a href="https://twitter.com/peterwooley/statuses/22870910163755008">Showed it to WDIM355 in February 2011</a> (with <a href="https://github.com/peterwooley/wdim-node-examples">wdim-node-examples</a>)</li>
+                <li>Implemented a Statusboard at work (in CoffeeScript)</li>
+                <li>Finishing up a non-trivial side project.</li>
+            </ul>
+        </div>        
+
+        <div class="slide">
+            <h1>You!</h1>
+            <ol>
+                <li>True or False: Are you comfortable with JavaScript?</li>
+                <li>True or False: Do you have a GitHub account?</li>
+                <li>Essay: What you hoping to get out of your $1???.?? investment here?</li>
+            </ol>
+        </div>
+
+        <div class="slide">
+            <h1>Syllabus</h1>
+            <ul>
+                <li>There is <a href="assets/SU12_WDIM493J_A.pdf">an official syllabus</a>.</li>
+                <li>There is also <a href="https://github.com/aipd-wdim493j/syllabus/blob/master/SU12_WDIM493J_A.md">the up-to-date syllabus</a>.</li>
+            </ul>
+        </div> 
+
+        <div class="slide title">
+        	<h1>Node.js is JavaScript running on the server built using Google's V8 engine. It can do almost everything you've wanted JavaScript to do*.</h1>
+
+            <div class="footer">* It still won't directly give you free pizza.</div>
+        </div>
+
+        <div class="slide">
+            <h1>Requirements</h1>
+            <ul>
+                <li>You must have a GitHub account (and use it for assignments)</li>
+                <li>You must get Node.js running on your own machine</li>
+            </ul>
+        </div>
+
+        <div class="slide">
+            <h1>Git &amp; Github</h1>
+            <ul>
+                <li><a href="http://git-scm.com/">Git</a> is a distributed version control system.</li>
+                <li>Basically, it lets you store every version of every file in any project.</li>
+                <li><a href="https://github.com/">GitHub</a> is a web service that stores all of those Git <em>repositories</em> that store every version of every file in your projects.</li>
+                <li>If you haven't already, go <a href="https://github.com/signup/free">sign up for a free GitHub account</a>. Then, <a href="mailto:pwooley@aii.edu">email your GitHub username to pwooley@aii.edu</a> and I'll add you to the <a href="https://github.com/aipd-wdim493j">aipd-wdim493j GitHub organization</a>.</li>
+            </ul>
+        </div>
+
+        <div class="slide">
+            <h1>Getting Git</h1>
+            <ul>
+                <li>On the Ai Windows computers:
+                    <ol>
+                        <li><a href="http://code.google.com/p/msysgit/downloads/list?can=2&q=portable&colspec=Filename+Summary+Uploaded+ReleaseDate+Size+DownloadCount">download Portable Git</a>. During class, find it in <code>S:\Data\wdim493j\</code>.</li>
+                        <li>Rename the file with a <code>.exe</code> (removing the <code>.renameToExe</code> part).</li>
+                        <li>Double-click and extract to <code>D:\Git</code>.</li>
+                        <li>Run <code>D:\Git\git-bash.bat</code>.</li>
+                    </ol>
+                </li>
+                <li>On your Windows computer:
+                    <ol>
+                        <li><a href="http://git-scm.com/download/win">Download &amp; install Git for Windows</a>.</li>
+                        <li>Open <code>C:\Program Files (x86)\Git\Git Bash.lnk</code>.</li>
+                    </ol>
+                </li>
+                <li>On OS X:
+                    <ol>
+                        <li><a href="http://git-scm.com/download/mac">Download &amp; install Git for OS X</a>.</li>
+                        <li>Open a Terminal.</li>
+                    </ol>
+                </li>
+                <li>On Linux
+                    <ol>
+                        <li>Install Git from your package manager (e.g., <code>apt-get install git-core</code>).</li>
+                    </ol>
+                </li>
+            </ul>
+        </div>
+
+        <div class="slide">
+            <h1>Configuring Git</h1>
+            <p>In your terminal, set your name and email:</p>
+            <pre class="brush: bash">git config --global user.name "Weter Pooley"
+git config --global user.email weter@pooley.co.uk</pre>
+        </div>
+
+        <div class="slide">
+            <h1>Hardcore Forking Action</h1>
+            <ul>
+                <li>Once you've been added to the aipd-wdim493j organization, go to the <a href="https://github.com/aipd-wdim493j/curriculum">aipd-wdim493j/curriculum repository</a>.</li>
+                <li>In the top-right, click Fork, then "Fork to <var>your-username</var>".</li>
+                <li>In your terminal, <code>cd</code> where you want to store the class notes:
+                    <pre class="brush: bash">cd ~/aipd/wdim493j/</pre>
+                </li>
+                <li>Clone your forked repository (replace <var>your-username</var> with your username):
+                    <pre class="brush: bash">git clone https://github.com/your-username/curriculum.git</pre>
+                </li>
+                <li>Lastly, create an <code>upstream</code> remote, so you can get each week's assignments:
+                    <pre class="brush: bash">git remote add upstream https://github.com/aipd-wdim493j/curriculum</pre>
+                </li>
+            </ul>
+        </div>
+
+        <div class="slide">
+        	<h1>Git is a Weapon</h1>
+        	<ul>
+        		<li>When we use a new Git feature, I'll guide you through the process.</li>
+                <li>At some point, you will fubar your repository. It is not Git's fault. I will help you fix it.</li>
+        		<li>If you want to learn to use Git on your own, try one of these:
+                    <ul>
+                        <li><a href="http://git-scm.com/book">Pro Git</a> (Free or <a href="http://amzn.com/1430218339">$19.86</a>)</li>
+                        <li><a href="http://gitref.org/">Git Reference</a></li>
+                        <li><a href="http://www.alistapart.com/articles/get-started-with-git/">A List Apart's Get Started with Git</a></li>
+                        <li>Anything in the <a href="http://answers.oreilly.com/topic/801-how-to-learn-git-a-link-roundup/"><em>How to learn Git</em> link roundup</a>.</li>
+                    </ul>
+                </li>
+        	</ul>
+        </div>
+
+        <div class="slide">
+            <h1>Getting Node.js up and running</h1>
+            <ul>
+                <li>On the Ai Windows computers:
+                    <ol>
+                        <li><a href="assets/nodejs.zip">Grab my portable Node.js zip file</a>. During class, find it in <code>S:\Data\wdim493j\</code>.</li>
+                        <li>Extract it to <code>D:\nodejs</code>.</li>
+                        <li>Double-click <code>D:\nodejs\node.cmd</code>.</li>
+                        <li>Run <code>node -v</code>. If it prints v0.8.1, you're done.</li>
+                    </ol>
+                </li>
+                <li>On OS X or your Windows computer:
+                    <ol>
+                        <li><a href="http://nodejs.org/#download">Download &amp; install Node.js</a>.</li>
+                        <li>In a terminal, run <code>node -v</code>. If it prints v0.8.1, you're done.</li>
+                    </ol>
+                </li>
+                <li>On Linux
+                    <ol>
+                        <li><a href="https://github.com/joyent/node/wiki/Installing-Node.js-via-package-manager">Install Node.js from your package manager</a>. On Ubuntu, run this:
+                        <pre class="brush: js">sudo apt-get install python-software-properties
+sudo apt-add-repository ppa:chris-lea/node.js
+sudo apt-get update
+sudo apt-get install nodejs npm</pre>
+                        </li>
+                        <li>In a terminal, run <code>node -v</code>. If it prints v0.8.1, you're done.</li>
+                    </ol>
+                </li>
+            </ul>
+        </div>
+
+        <div class="slide">
+        	<h1>Node.js as a <dfn title="read-eval-print loop">REPL</dfn></h1>
+        	<ul>
+        		<li>In a terminal, run:
+                    <pre class="brush: bash">node</pre>
+                </li>
+        		<li>You're now in the Node REPL, try writing a little JavaScript:
+                    <pre class="brush: js">&gt; 2+2
+4
+&gt; 2+2 !== 5
+true
+&gt; var answer = 42;
+undefined
+&gt; answer
+42
+&gt; answer + 10
+52
+&gt; {a: 1, b: answer}
+{ a: 1, b: 42 }
+&gt; .exit
+</pre>
+                </li>
+        	</ul>
+        </div>
+
+        <div class="slide">
+        	<h1>Hello World</h1>
+        </div>
+
+        <div class="slide">
+        	<h1>Node Package Manager</h1>
+        </div>
+
+        <div class="slide">
+            <h1>Screen Scrapathon</h1>
+        </div>
+
+        <div class="slide">
+            <h1>File Systathon</h1>
+        </div>
+
+        <div class="slide title">
+        	<h1>EOL</h1>
+        	<h2><a href="homework.html">Homework</a></h2>
+        </div>
+
+        <div class="layout" data-name="title">
+            <content></content>
+            <div class="footer">
+                <span class="left">Peter Wooley</span>
+                <span class="right">WDIM493J</span>
+                <span class="left">Twitter <a href="http://twitter.com/peterwooley">@peterwooley</a></span>
+                <span class="right"><a href="http://wdim493j.herokuapp.com">Notes online</a> (and <a href="https://github.com/aipd-wdim493j/curriculum">on GitHub</a>)</span>
+                <hr class="defloat" />
+            </div>
+        </div>
+
+        <div class="layout nofooter" data-name="default">
+            <content></content>
+        </div>
+    
+        <!-- Common Scripts -->
+        <script src="../js/jquery.noisy.min.js"></script>
+        <script src="../js/index.js"></script>
+    </body>
+</html>
