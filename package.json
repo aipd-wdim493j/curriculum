@@ -2,6 +2,10 @@
     "name": "wdim493j",
     "description": "Class notes and assignments for AIPD's WDIM493J Node.js class.",
     "version": "1.0.0",
+    "engines": {
+        "node": "0.8.2",
+        "npm":  "1.1.36"
+      }
     "contributors": [{
         "name": "Peter Wooley",
         "email": "peterwooley@gmail.com",
