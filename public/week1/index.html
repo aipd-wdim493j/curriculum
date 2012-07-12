@@ -60,7 +60,7 @@
         </div> 
 
         <div class="slide title">
-        	<h1>Node.js is JavaScript running on the server built using Google's V8 engine. It can do almost everything you've wanted JavaScript to do*.</h1>
+        	<h1><a href="http://nodejs.org">Node.js</a> is JavaScript running on the server built using Google's V8 engine. It can do almost everything you've wanted JavaScript to do*.</h1>
 
             <div class="footer">* It still won't directly give you free pizza.</div>
         </div>
@@ -162,13 +162,13 @@ git config --global user.email weter@pooley.co.uk</pre>
                         <li><a href="assets/nodejs.zip">Grab my portable Node.js zip file</a>. During class, find it in <code>S:\Data\wdim493j\</code>.</li>
                         <li>Extract it to <code>D:\nodejs</code>.</li>
                         <li>Double-click <code>D:\nodejs\node.cmd</code>.</li>
-                        <li>Run <code>node -v</code>. If it prints v0.8.1, you're done.</li>
+                        <li>Run <code>node -v</code>. If it prints v0.8.2, you're done.</li>
                     </ol>
                 </li>
                 <li>On OS X or your Windows computer:
                     <ol>
                         <li><a href="http://nodejs.org/#download">Download &amp; install Node.js</a>.</li>
-                        <li>In a terminal, run <code>node -v</code>. If it prints v0.8.1, you're done.</li>
+                        <li>In a terminal, run <code>node -v</code>. If it prints v0.8.2, you're done.</li>
                     </ol>
                 </li>
                 <li>On Linux
@@ -179,7 +179,7 @@ sudo apt-add-repository ppa:chris-lea/node.js
 sudo apt-get update
 sudo apt-get install nodejs npm</pre>
                         </li>
-                        <li>In a terminal, run <code>node -v</code>. If it prints v0.8.1, you're done.</li>
+                        <li>In a terminal, run <code>node -v</code>. If it prints v0.8.2, you're done.</li>
                     </ol>
                 </li>
             </ul>
@@ -189,7 +189,7 @@ sudo apt-get install nodejs npm</pre>
         	<h1>Node.js as a <dfn title="read-eval-print loop">REPL</dfn></h1>
         	<ul>
         		<li>In a terminal, run:
-                    <pre class="brush: bash">node</pre>
+                    <pre class="brush: bash">$ node</pre>
                 </li>
         		<li>You're now in the Node REPL, try writing a little JavaScript:
                     <pre class="brush: js">&gt; 2+2
@@ -212,18 +212,73 @@ undefined
 
         <div class="slide">
         	<h1>Hello World</h1>
+            <ul>
+                <li>The <code>node</code> app most commonly takes a filename as an argument.</li>
+                <li>In <code>week1/inclass</code>, create <code>helloworld.js</code> and add
+                    <pre class="brush: js">console.log("Hello, World!");</pre>
+                </li>
+                <li>Back in your terminal, run
+                    <pre class="brush: bash">$ cd path/to/week1/inclass
+$ node helloworld.js
+Hello, World!
+</pre>
+                <li>Pat yourself on the back, you're a Noder now!</li>
+            </ul>
         </div>
 
         <div class="slide">
         	<h1>Node Package Manager</h1>
+            <p>npm is a package manager for node. You can use it to install and publish your node programs. It manages dependencies and does other cool stuff." &mdash;<a href="http://npmjs.org/">npmjs.org</a></p>
+            <p>With npm...</p>
+            <ul>
+                <li>You can find cool packages at <a href="http://search.npmjs.org/">search.npmjs.org</a>.</li>
+                <li>You can install packages locally with something like:
+                    <pre class="brush: bash">$ npm install request</pre>
+                </li>
+                <li>You can use the packages you install within a node program using code like:
+                    <pre class="brush: js">var request = require('request');
+request('http://www.google.com', function (error, response, body) {
+  if (!error && response.statusCode == 200) {
+    console.log(body) // Print the google web page.
+  }
+})</pre>
         </div>
 
         <div class="slide">
             <h1>Screen Scrapathon</h1>
+            <p>In pairs, you need to craft a Node.js app that finds the latest issue number of <a href="http://www.alistapart.com/">A List Apart</a>. To do this, you'll use two Node.js packages available on npm: <a href="https://github.com/mikeal/request">request</a> and <a href="https://github.com/MatthewMueller/cheerio">cheerio</a>. Follow these steps and complete the implementation to achieve Hackathon Success:</p>
+            <ol>
+                <li>In <code>week1/class</code>, create a directory named <code>ala</code>.</li>
+                <li><code>cd</code> into <code>ala</code> and create a file named <code>app.js</code>.</li>
+                <li>Run
+                    <pre class="brush: bash">$ npm install request cheerio</pre>
+                </li>
+                <li>Edit <code>app.js</code> and add the following:
+                    <pre class="brush: js">var request = require('request')
+    , cheerio = require('cheerio');</pre>
+                </li>
+                <li>Refer to the <a href="https://github.com/mikeal/request">request docs</a> on how to load in <a href="http://www.alistapart.com/">A List Apart's home page</a> and <a href="https://github.com/MatthewMueller/cheerio">cheerio's docs</a> on how to screen scrape it to find the current issue number.</li>
+                </li>At the end, you should be able to run:
+                    <pre class="brush: bash">$ node app.js
+The latest ALA issue is number XXX</pre> 
         </div>
 
         <div class="slide">
             <h1>File Systathon</h1>
+            <p>In pairs, craft a Node.js app that lists the contents in the current directory. For each item, denote whether it's a directory or file. Follow these steps:</p>
+            <ul>
+                <li><code>cd</code> into <code>week1/inclass/filesystathon</code></li>
+                <li>Edit <code>app.js</code>.</li>
+                <li>Refer to the <a href="http://nodejs.org/api/fs.html">Node.js File System Docs</a> (particularly <a href="http://nodejs.org/api/fs.html#fs_fs_readdir_path_callback">fs.readdir</a> and <a href="http://nodejs.org/api/fs.html#fs_fs_stat_path_callback">fs.stat</a>).
+                <li>At the end, you should be able to run:
+                    <pre class="brush: bash">$ node app.js
+a/
+app.js
+b/
+c/
+d
+e
+f</pre> 
         </div>
 
         <div class="slide title">
