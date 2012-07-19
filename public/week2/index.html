@@ -1,0 +1,248 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+    <title>Week 2 &mdash; WDIM493J Node.js</title>
+    <!-- Slippy core file and dependencies -->
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.min.js"></script>
+    <script type="text/javascript" src="../lib/slippy/src/jquery.history.js"></script>
+    <script type="text/javascript" src="../lib/slippy/src/slippy.js"></script>
+    <!-- Slippy structural styles -->
+    <link type="text/css" rel="stylesheet" href="../lib/slippy/src/slippy.css"/>
+    <!-- Syntax highlighting core file  -->
+    <script type="text/javascript" src="../lib/slippy/src/highlighter/shCore.js"></script>
+    <!-- Syntax highlighting brushes, remove those you don't need -->
+    <script type="text/javascript" src="../lib/slippy/src/highlighter/shBrushBash.js"></script>
+    <script type="text/javascript" src="../lib/slippy/src/highlighter/shBrushCss.js"></script>
+    <script type="text/javascript" src="../lib/slippy/src/highlighter/shBrushJScript.js"></script>
+    <script type="text/javascript" src="../lib/slippy/src/highlighter/shBrushXml.js"></script>
+    <!-- Syntax highlighting styles-->
+    <link type="text/css" rel="stylesheet" href="../lib/slippy/src/highlighter/shCore.css"/>
+    <link type="text/css" rel="stylesheet" href="../lib/slippy/src/highlighter/shThemeRDark.css"/>
+
+
+    <!-- Common Styles -->
+    <link href="http://fonts.googleapis.com/css?family=Terminal+Dosis+Light:regular&v1" rel="stylesheet" type="text/css" >
+    <link type="text/css" rel="stylesheet" href="../css/slippy-wdim.css" />
+  </head>
+  <body>
+    <div class="slide title" data-layout="title">
+      <h1>Node.js</h1>
+      <h2>Week 2</h2>
+    </div>
+    
+    <div class="slide">
+      <h1>Setup</h1>
+      <ul>
+        <li>Get Git and Node.js setup on your box. (<a href="../week1/#8">Refer to last week's slide for help</a>)</li>
+        <li>In your <code>curriculum/</code> folder, pull down the latest code changes with:
+          <pre class="brush: bash">$ git pull upstream</pre>
+        </li>
+        <li>If you see <code>fatal: 'upstream' does not appear to be a git repository</code>, then add the upstream remote with:
+          <pre class="brush: bash">$ git remote add upstream https://github.com/aipd-wdim493j/curriculum</pre>
+        </li>
+      </ul>
+    </div>
+
+    <div class="slide">
+    	<h1>Introduced</h1>
+    	<ol>
+    		<li>What was Ryan Dahl's most outstanding mannerism?</li>
+    		<li>What is the fundamental difference between Node.js and everything else?</li>
+    		<li>How many threads does a Node.js process use?</li>
+    	</ol>
+    </div>
+
+    <div class="slide">
+      <h1>Noders</h1>
+      <ol>
+        <li><a href="https://twitter.com/ryah">@ryah</a> (Ryan Dahl) <a href="http://www.youtube.com/watch?v=SAc0vQCC6UQ">started Node in 2009</a>.</li>
+        <li><a href="https://twitter.com/izs">@izs</a> (Isaac Schlueter) is the current Gatekeeper of Node (and he wrote <code>npm</code>).</li>
+        <li><a href="https://twitter.com/tjholowaychuk">@tjholowaychuk</a> (TJ Holowaychuk) created <a href="http://expressjs.com/">Express</a>, <a href="http://learnboost.github.com/stylus/">Stylus</a>, <a href="http://jade-lang.com/">Jade</a> and more.</li>
+        <li><a href="https://twitter.com/substack">@substack</a> (James Halliday) writes <a href="https://github.com/substack">a lot of npm modules</a>.</li>
+      </ol>
+    </div>
+
+    <div class="slide title">
+    	<h1>CommonJS</h1>
+    	<h2>Later</h2>
+    </div>
+
+    <div class="slide">
+    	<h1><code>npm</code></h1>
+      <p>Let's get comfortable with <code>npm</code> by using it. <code>cd</code> into <code>week2/inclass/scraper</code>.</p>
+      <ul>
+        <li><code>npm init</code> to create a <code>package.json</code></li>
+      	<li><code>npm install</code> installs <em>local</em> or <em>global</em> modules.
+          <pre class="brush: bash">npm install optimist request cheerio --save
+npm install node-inspector -g</pre>
+        </li>
+      	<li><code>npm rm</code> removes a package (or packages).
+          <pre class="brush: js">npm rm optimist</pre>
+        </li>
+      	<li><code>npm list</code> shows all of your local modules.</li>
+        <li><code>npm install</code> can also install all of your package's dependencies.
+          <pre class="brush: js">npm install</pre>
+        </li>
+        <li>And of course, <a href="http://npmjs.org/doc/">look at the <code>npm</code> docs</a>.</li>
+      </ul> 
+    </div>
+
+    <div class="slide">
+      <h1><a href="http://nodejs.org/api/globals.html">Globals</a></h1>
+      <ul>
+        <li>There is no <code>window</code> object in Node.</li>
+        <li>These are Globals you'll love to use:
+          <ul>
+            <li><code><a href="http://nodejs.org/api/globals.html#globals_require">require</a>()</code> synchronously loads in modules.</li>
+            <li><code><a href="http://nodejs.org/api/stdio.html">console</a></code> provides <code><a href="http://nodejs.org/api/stdio.html#stdio_console_log_data">log()</a></code>, <code><a href="http://nodejs.org/api/stdio.html#stdio_console_error_data">error()</a></code>, <code><a href="http://nodejs.org/api/stdio.html#stdio_console_time_label">time()</a></code>/<code><a href="http://nodejs.org/api/stdio.html#stdio_console_timeend_label">timeEnd()</a></code> and more.</li>
+            <li><code><a href="http://nodejs.org/api/globals.html#globals_filename">__filename</a></code> is the absolute path of the currently executing script.</li>
+            <li><code><a href="http://nodejs.org/api/globals.html#globals_dirname">__dirname</a></code> is the full path name that the currently executing script resides in.</li>
+            <li><code><a href="http://nodejs.org/api/process.html#process_process">process</a></code> contains a ton of fun stuff, including <code><a href="http://nodejs.org/api/process.html#process_process_argv">argv</a></code>, which contains the command line arguments passed to Node.</li>
+        </li>
+      </ul>
+    </div> 
+
+    <div class="slide">
+    	<h1>Argathon</h1>
+    	<p>In pairs, craft a Node app that can screen-scrape a user-provided URL with a user-provided CSS Selector and show the user the contents found in that selector. If the user provides the optional <code>--html</code> flag, the HTML of the selected node should be shown to the user instead of the text. Like last week, you'll need to use <a href="https://github.com/mikeal/request">request</a>, <a href="https://github.com/MatthewMueller/cheerio">cheerio</a>. To more easily handle the command-line arguments, use <a href="https://github.com/substack/node-optimist/">optimist</a>.</p>
+    	<ul>
+    		<li>In <code>week2/inclass/scraper</code>, edit scraper.js.</li>
+    		<li>Starting with code similar to <a href="../week1/#16">last week'sScreen Scrapathon</a>, adapt it to fulfill the requirements.</li>
+    		<li>At the end, you should be able to run:
+          <pre class="brush: js">$ node scraper.js http://wdim493j.herokuapp.com ul
+Week 1Week 2
+$ node scraper.js http://wdim493j.herokuapp.com ul --html 
+&lt;li&gt;&lt;a href="week1/"&gt;Week 1&lt;/a&gt;&lt;/li&gt;&lt;li&gt;&lt;a href="week2/"&gt;Week 2&lt;/a&gt;&lt;/li&gt;</pre>
+        </li>
+    	</ul>
+    </div>
+
+    <div class="slide">
+    	<h1>Replathon</h1>
+    	<p>Just like the <code>node</code> program itself, you can create a REPL. In pairs, extend your Argathon app to accept a <code>--repl</code> argument. When <code>--repl</code> is used along with a URL, start a REPL that allows the user to run their own queries against the DOM.</p>
+    	<ul>
+            <li>In <code>week2/inclass/scraper</code>, edit scraper.js.</li>
+            <li>Read the <a href="http://nodejs.org/api/repl.html">REPL</a> documentation, paying close attention to the <a href="http://nodejs.org/api/repl.html#repl_repl_features">REPL Features</a> section.</li>
+            <li>At the end, you should be able to run:
+<pre class="brush: js">$ node scraper.js http://alistapart.com --repl
+&gt; $("#ish em").text()
+"356"
+&gt; $("#masthead img").attr('alt')
+"A LIST Apart: For People Who Make Websites"</pre>
+        </ul>
+    </div>
+
+    <div class="slide">
+      <h1>Debugging</h1>
+      <p>Debugging Node isn't <em>exactly</em> the best experience, but <a href="https://github.com/dannycoates/node-inspector">node-inspector</a> makes it a lot better.</p>
+      <ul>
+        <li>In <code>week2/inclass/scaper</code> run:
+          <pre class="brush: js">node --debug-brk scraper.js</pre>
+        </li>
+        <li>Now, we need to start <code>node-inspector</code> and put it in the background.
+          <ul>
+            <li>On Windows, run:
+              <pre class="brush: bash">start /b node-inspector</pre>
+            </li>
+            <li>On *nix, run:
+              <pre class="brush: bash">node-inspector &amp;</pre>
+            </li>
+          </ul>
+        </li>
+        <li>To start debugging, open your browser to <a href="http://localhost:8080/debug?port=5858">http://localhost:8080/debug?port=5858</a>.</li>
+      </ul>
+    </div>
+
+    <div class="slide">
+    	<h1>Node.js is Cancer</h1>
+    	<ul>
+    		<li><a href="http://teddziuba.com/">Ted Dziuba</a> wrote <a href="http://pages.citebite.com/b2x0j8q1megb">an article explaining why Node.js is a cancer</a>.</li>
+    		<li>His argument was really against single-threaded programming languages, the JavaScript language itself and the newness of Node.</li>
+    		<li>He makes an important point about <a href="http://en.wikipedia.org/wiki/CPU_bound">CPU-bound</a> tasks. A single Node.js process cannot compute the Fibonacci sequence to 40th value and also evaluate <a href="http://nodejs.org/api/globals.html#globals_settimeout_cb_ms">timers</a>.</li>
+        <li>To test this out, open up <code>week2/inclass/fibonacci</code>.</li>
+    	</ul>
+    </div>
+
+    <div class="slide">
+    	<h1>Fibonacci</h1>
+    	<ul>
+        <li>In <code>week2/inclass/fibonacci/fib.js</code>, we have a simple fibonacci function.</li>
+        <li>You can use <code><a href="http://nodejs.org/api/modules.html#modules_module_exports">module.exports</a></code> turn <code>fib.js</code> into a Node module:
+          <pre class="brush: js">module.exports = function fib(n){</pre>
+        </li>
+        <li>Next, we'll <code>require</code> our fibonacci module in <code>app.js</code>:
+          <pre class="brush: js">var fib = require('./fib');</pre>
+        </li>
+        <li>Together, we'll use <code>setTimeout</code> to demonstrate how calculating the Fibonacci sequence to a high enough number can block other activities from taking place.</li>
+        <li>Then we'll use <a href="http://nodejs.org/api/child_process.html#child_process_child_process_fork_modulepath_args_options"><code>child_process.fork()</code></a> to fix it.</li>
+      </ul>
+    </div>
+
+    <div class="slide">
+    	<h1><a href="http://nodejs.org/api/modules.html">Modules</a></h1>
+    	<ul>
+        <li>Node modules can be more than a single <code>.js</code> file using <code>module.exports</code>.</li>  
+        <li>You can bundle multiple files together in a module by creating a directory of your module (e.g., <code>fib/</code>) and naming the main file <code>index.js</code> (e.g., <code>fib.js =&gt; code.js</code>).</li>
+        <li>Node will look for a <code>package.json</code> in the module folder, which can contain two keys:
+          <pre class="brush: js">{
+  "name" : "fib",
+  "main" : "./lib/fib.js"
+}</pre>
+          Node would then load <code>fib/lib/fib.js</code> instead of <code>index.js</code>.</li>
+        <li>When a call to <code>require()</code> does not start with <code>/</code>, <code>./</code> or <code>../</code>, Node looks for the module in <code>./node_modules/</code>, then <code>../node_modules/</code> and so on. If <code>fib/</code> is placed in <code>./node_modules/</code>, we can load it just like an <code>npm</code> module:
+          <pre class="brush: js">var fib = require('fib');</pre>
+        </li>
+      </ul>
+    </div>
+
+    <div class="slide">
+    	<h1>Asciiathon</h1>
+    	<p>Alone or in a team, craft a Node module that accepts text and returns <a href="http://en.wikipedia.org/wiki/ASCII_art">ASCII art</a> of the given text.</p>
+      <ul>
+        <li>Use the provided code in <code>week2/inclass/ascii</code>.</li>
+        <li>Check out the code in <code>app.js</code> to see how your module will be used.</li>
+        <li>Create your module in <code>node_modules/asciiart/index.js</code>.</li>
+        <li><a href="http://www.asciiarts.net/figlet.ajax.php?message=Node.js&font=standard.flf">asciiarts.net/figlet.ajax.php</a> accepts a <code>message</code> argument and renders ASCII Art. Use <code>request</code> and <code>cheerio</code> to fetch and parse the request.</li>
+        <li>When your module is finished, running <code>node app.js</code> should yield:
+          <pre class="brush: js">$ node app.js
+  _   _           _         _
+ | \ | | ___   __| | ___   (_)___
+ |  \| |/ _ \ / _` |/ _ \  | / __|
+ | |\  | (_) | (_| |  __/_ | \__ \
+ |_| \_|\___/ \__,_|\___(_)/ |___/
+                         |__/
+  _        __             _
+ (_)___   / _|_   _ _ __ | |
+ | / __| | |_| | | | '_ \| |
+ | \__ \ |  _| |_| | | | |_|
+ |_|___/ |_|  \__,_|_| |_(_)
+</pre>
+        </li>
+    </div>
+
+    <div class="slide title">
+      <h1><a href="http://nodejs.org/api/os.html#os_os_eol">os.EOL</a></h1>
+      <h2><a href="homework.html">Homework</a></h2>
+    </div>
+
+    <div class="layout" data-name="title">
+      <content></content>
+      <div class="footer">
+        <span class="left">Peter Wooley</span>
+        <span class="right">WDIM493J</span>
+        <span class="left">Twitter <a href="http://twitter.com/peterwooley">@peterwooley</a></span>
+        <span class="right"><a href="http://wdim493j.herokuapp.com">Notes online</a> (and <a href="https://github.com/aipd-wdim493j/curriculum">on GitHub</a>)</span>
+        <hr class="defloat" />
+      </div>
+    </div>
+
+    <div class="layout nofooter" data-name="default">
+      <content></content>
+    </div>
+  
+    <!-- Common Scripts -->
+    <script src="../js/jquery.noisy.min.js"></script>
+    <script src="../js/index.js"></script>
+  </body>
+</html>
