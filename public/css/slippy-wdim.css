@@ -3,7 +3,6 @@
  * Copyright (C) 2011, Peter Wooley
  * http://peterwooley.com - peter@peterwooley.com
  */
-
 * {
 	margin:0;
 	padding:0;
@@ -13,14 +12,15 @@ body, html {
 	background:#ddd;
 	color:#555;
 	font-family:Tahoma, sans-serif;
-	line-height:1.3;
-    overflow: hidden;
-    height: 100%;
+	line-height:1.4;
+  overflow: hidden;
+  height: 100%;
 }
 
 a {
 	color:#111;
 	text-decoration:none;
+  border-bottom: 1px solid #999;
 }
 a:visited {
 	color:#222;
@@ -226,4 +226,12 @@ a sup {
 
 ins {
     text-decoration:underline;
+}
+
+code {
+  font-family: Consolas, Menlo, monospace;
+  background:rgba(255,255,255,.2);
+  padding:2px;
+  border-radius:3px;
+  border:1px solid #ccc;
 }
