@@ -20,6 +20,9 @@ app.get("/", function(req, res) {
                             };
                         }
                     })
+                    .sort(function(a, b) {
+                      return a.href.replace('week', '') - b.href.replace('week', '');
+                    })
         });
     });
 });
