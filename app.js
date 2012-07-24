@@ -27,4 +27,4 @@ app.get("/", function(req, res) {
     });
 });
 
-app.listen(process.env.C9_PORT || process.env.PORT || 80);
+app.listen(process.env.C9_PORT || process.env.PORT || 3000);

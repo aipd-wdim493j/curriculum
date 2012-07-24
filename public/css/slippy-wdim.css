@@ -235,3 +235,7 @@ code {
   border-radius:3px;
   border:1px solid #ccc;
 }
+
+.syntaxhighlighter {
+  padding:5px 1px !important;
+}
