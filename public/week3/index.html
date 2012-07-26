@@ -1,0 +1,232 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+    <title>Week 3 &mdash; WDIM493J Node.js</title>
+    <!-- Slippy core file and dependencies -->
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.min.js"></script>
+    <script type="text/javascript" src="../lib/slippy/src/jquery.history.js"></script>
+    <script type="text/javascript" src="../lib/slippy/src/slippy.js"></script>
+    <!-- Slippy structural styles -->
+    <link type="text/css" rel="stylesheet" href="../lib/slippy/src/slippy.css"/>
+    <!-- Syntax highlighting core file  -->
+    <script type="text/javascript" src="../lib/slippy/src/highlighter/shCore.js"></script>
+    <!-- Syntax highlighting brushes, remove those you don't need -->
+    <script type="text/javascript" src="../lib/slippy/src/highlighter/shBrushBash.js"></script>
+    <script type="text/javascript" src="../lib/slippy/src/highlighter/shBrushCss.js"></script>
+    <script type="text/javascript" src="../lib/slippy/src/highlighter/shBrushJScript.js"></script>
+    <script type="text/javascript" src="../lib/slippy/src/highlighter/shBrushXml.js"></script>
+    <!-- Syntax highlighting styles-->
+    <link type="text/css" rel="stylesheet" href="../lib/slippy/src/highlighter/shCore.css"/>
+    <link type="text/css" rel="stylesheet" href="../lib/slippy/src/highlighter/shThemeRDark.css"/>
+
+
+    <!-- Common Styles -->
+    <link href="http://fonts.googleapis.com/css?family=Terminal+Dosis+Light:regular&v1" rel="stylesheet" type="text/css" >
+    <link type="text/css" rel="stylesheet" href="../css/slippy-wdim.css" />
+  </head>
+  <body>
+    <div class="slide title" data-layout="title">
+      <h1>Node.js</h1>
+      <h2>Week 3</h2>
+    </div>
+    
+    <div class="slide">
+      <h1>Setup, Again</h1>
+      <ul>
+        <li>Get Git and Node.js setup on your box. (<a href="../week1/#8">Refer to Week 1's slide for help</a>)</li>
+        <li>In your <code>curriculum/</code> folder, pull down the latest code changes with:
+          <pre class="brush: bash">$ git pull upstream master</pre>
+        </li>
+        <li>If you see <code>fatal: 'upstream' does not appear to be a git repository</code>, then add the upstream remote with:
+          <pre class="brush: bash">$ git remote add upstream https://github.com/aipd-wdim493j/curriculum</pre>
+        </li>
+      </ul>
+    </div>
+
+    <div class="slide">
+    	<h1>Choose My Own Adventure</h1>
+    	<ol>
+    		<li>[Someone's Cool CYOA]</li>
+    		<li>[Someone's Cool CYOA]</li>
+    	</ol>
+    </div>
+
+    <div class="slide title">
+    	<h1>Hitler Uses Git</h1>
+      <iframe width="76%" style="padding:0 12%" height="56.25%" src="http://www.youtube.com/embed/CDeG4S-mJts" frameborder="0" allowfullscreen="allowfullscreen"></iframe>
+    </div>
+
+    <div class="slide title">
+      <h1>First Things First</h1>
+      <p>When working with long running processes, <code>nodemon</code> will restart your process when the file has changed. During development, you almost always want to use <code>nodemon</code> instead of <code>node</code>.</p>
+      <pre class="brush: bash">$ npm install nodemon -g
+$ cd week3/inclass/servers/
+$ nodemon tcp-echo.js</pre>
+    </div>
+
+    <div class="slide">
+      <h1>TCP Server</h1>
+      <ul>
+        <li>The <a href="http://en.wikipedia.org/wiki/Transmission_Control_Protocol">Transmission Control Protocol</a> is that protocol you see at the beginning "TCP/IP".</li>
+        <li>TCP takes data, chops it up into <a href="http://en.wikipedia.org/wiki/Octet_(computing)">octects</a> and passes it from one computer to another in a reliable fashion.</li>
+        <li>Everything you love (the web, email, FTP, kittens<cite>[citation needed]</cite>) use TCP to do what you expect of them.</li>
+        <li>Today, it's going to help demonstrate Node's <a href="http://nodejs.org/api/events.html">EventEmitter</a>.</li>
+      </ul>
+    </div> 
+
+    <div class="slide">
+    	<h1><code>tcp-echo.js</code></h1>
+    	<ul>
+    		<li>If you're on a *nix system (or have it installed through Cygwin), run:
+          <pre class="brush: js">$ nc localhost 1337</pre>
+        </li>
+    		<li>You are now connected to your Node TCP server using <a href="http://en.wikipedia.org/wiki/Netcat">Netcat</a>.</li>
+    		<li>Type any line of text then hit Enter. It should be echoed back to you.</li>
+        <li>Now, let's look at the code.</li>
+    	</ul>
+    </div>
+
+    <div class="slide">
+      <h1><code>tcp-chat.js</code></h1>
+      <ul>
+        <li>If you have <code>nc</code>, run:
+          <pre class="brush: bash">$ nc &lt;peter's-ip-address&gt; 8000</pre>
+        </li>
+        <li>Now, you can send lines and they're sent to everyone else connected.</li>
+        <li>Let's extend this example to give users a random nickname and set it themselves.</li>
+      </ul>
+    </div>
+
+    <div class="slide">
+    	<h1><a href="http://nodejs.org/api/events.html">EventEmitter</a></h1>
+    	<ul>
+    		<li>A lot of Node's objects are EventEmitters (HTTP Server, HTTPS Server, REPL Server, Stream, TCP Server, TCP Client, etc.).</li>
+    		<li>Any object can inherit from an EventEmitter, so it too can emit events.</li>
+    		<li>You can add event handlers for EventEmitters, much like DOM events:
+          <pre class="brush: js">var events = require('events');
+var emitter = new events.EventEmitter();
+
+emitter.on("data", function(err, data) {
+  if(err) return console.log("Error!");
+  console.log("Data: " + data);
+});</pre>
+        </li>
+        <li>You can emit (AKA trigger) events easily.
+          <pre class="brush: js">emitter.emit("data", "No data");
+emitter.emit("data", null, "Howdy, Howdy, Howdy!");</pre>
+        </li>
+    	</ul>
+    </div>
+
+    <div class="slide">
+    	<h1>Autochatathon</h1>
+    	<p>On your own or in pairs, craft a Node app that uses <code><a href="http://nodejs.org/api/net.html#net_net_connect_options_connectionlistener">net.connect()</a></code> to connect to my chat server and perform these actions:</p>
+      <ul>
+        <li>Send a greeting message.</li>
+        <li>Change its nickname (<code>/nick new-name</code>).</li>
+        <li>Wait for another user to post a message and reply with "Don't copy that floppy!" (or another adorable meme).</li>
+      </ul>
+      <p>I would suggest you do the following:</p>
+    	<ul>
+    		<li>In <code>week3/inclass/autochatathon</code>, edit <code>app.js</code>.</li>
+    		<li>Read the <code><a href="http://nodejs.org/api/net.html#net_net_connect_options_connectionlistener">net.connect()</a></code> docs and start from their example (Note that to send data to the chat server, you need to end your strings with <code>\r\n</code>).</li>
+    		<li>At the end, you should run <code>node app.js</code> and successfully connect to my server, send a message, change your nickname and then wait for a message to be sent before sending an internet meme phrase and disconnecting.</li>
+        </li>
+    	</ul>
+    </div>
+
+    <div class="slide">
+    	<h1>HTTP Server</h1>
+      <ul>
+        <li>You may have heard that Node can also act as an HTTP Server.
+          <pre class="brush: js">var http = require('http');
+http.createServer(function (req, res) {
+  res.writeHead(200, {'Content-Type': 'text/plain'});
+  res.end('Hello World\n');
+}).listen(1337, '127.0.0.1');
+console.log('Server running at http://127.0.0.1:1337/');</pre>
+        </li>
+        <li>Let's dive in to <code>week3/inclass/servers/http.js</code>.</li>
+    </div>
+
+    <div class="slide">
+    	<h1> Node vs. PHP</h1>
+    	<ul>
+    		<li>A single file (<code>app.js</code>) running everything (instead of multiple <code>php</code> files.</li>
+    		<li>Asynchronous access to every <code>request</code> and <code>response</code> object.</li>
+    		<li>A cleaner, more cohesive API.</li>
+        <li>What else?</li>
+    	</ul>
+    </div>
+
+    <div class="slide">
+      <h1>Web Serverathon</h1>
+      <p>On your own or in pairs, craft a Node app that serves a basic HTML &amp; CSS site. Using the work we've already done in <code>week3/inclass/servers/http.js</code>, modify it so that when you load <code>http://localhost:1337</code> in your browser, it renders the contents of <code>week3/inclass/servers/public/index.html</code> along with <code>index.css</code> and <code>favicon.ico</code>.</p>
+      <p>I would suggest you:</p>
+      <ul>
+        <li>Use <code>nodemon http.js</code>, so you can make changes to <code>http.js</code> and automatically restart your HTTP Server.</li>
+        <li>Look at <code><a href="http://nodejs.org/api/fs.html#fs_fs_createreadstream_path_options">fs.createReadStream()</a></code> and <code><a href="http://nodejs.org/api/util.html#util_util_pump_readablestream_writablestream_callback">util.pump()</a></code>.</li>
+        <li>At the end, well, you'll know it when you see it.</li>
+    </div>
+
+    <div class="slide">
+    	<h1><a href="http://expressjs.com/">Express</a></h1>
+    	<ul>
+    		<li>Express abstracts Node's lower-level HTTP APIs with obvious, powerful APIs.</li>
+    		<li>It's built atop <a href="http://www.senchalabs.org/connect/">Connect</a>, which does a lot of the work.</li>
+    		<li>Let's use Express to write do what you just did in the Hackathon.</li>
+    	</ul>
+    </div>
+
+    <div class="slide">
+    	<h1>Routes</h1>
+    	<ul>
+    		<li>Routing requests based on URL can be performed like:
+          <pre class="brush: js">app.get('/', function(req, res) {
+  res.send("Hello World!");
+});<pre>
+        </li>
+    		<li>You can capture values within the URL using:
+          <pre class="brush: js">app.get('/product/:id', function(req, res) {
+  res.send("Here's product info for the id: " + req.params.id);
+});
+        </li>
+    		<li>Express's <a href="http://expressjs.com/guide.html#routing">Routing docs</a> are particularly strong in this area.</li>
+    	</ul>
+    </div>
+
+    <div class="slide">
+    	<h1>If we have time...</h1>
+    	<ul>
+    		<li><a href="http://expressjs.com/guide.html#configuration">Configuration</a></li>
+    		<li><a href="http://expressjs.com/guide.html#session-support">Sessions</a></li>
+    		<li><a href="http://expressjs.com/guide.html#view-rendering">Templating</a></li>
+    	</ul>
+    </div>
+
+    <div class="slide title">
+      <h1>Done!</h1>
+      <h2><a href="homework.html">Homework</a></h2>
+    </div>
+
+    <div class="layout" data-name="title">
+      <content></content>
+      <div class="footer">
+        <span class="left">Peter Wooley</span>
+        <span class="right">WDIM493J</span>
+        <span class="left">Twitter <a href="http://twitter.com/peterwooley">@peterwooley</a></span>
+        <span class="right"><a href="http://wdim493j.herokuapp.com">Notes online</a> (and <a href="https://github.com/aipd-wdim493j/curriculum">on GitHub</a>)</span>
+        <hr class="defloat" />
+      </div>
+    </div>
+
+    <div class="layout nofooter" data-name="default">
+      <content></content>
+    </div>
+  
+    <!-- Common Scripts -->
+    <script src="../js/jquery.noisy.min.js"></script>
+    <script src="../js/index.js"></script>
+  </body>
+</html>
