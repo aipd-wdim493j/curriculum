@@ -1,10 +1,11 @@
-var fs = require('fs'),
-    express = require('express')
-    , app = express.createServer();
+var fs = require('fs');
+var express = require('express');
+var codesocket = require('./lib/codesocket');
+var argv = require('optimist').argv;
+var app = express.createServer();
 
 app.use(express.static(__dirname+'/public'));
 app.set('view options', { layout: false });
-
 
 app.get("/", function(req, res) {
     fs.readdir('./public', function(err, files) {
@@ -28,3 +29,17 @@ app.get("/", function(req, res) {
 });
 
 app.listen(process.env.C9_PORT || process.env.PORT || 3000);
+
+if(argv.server) { // If we're running as a server, start up codesocket server.
+  codesocket.createServer({
+    port: 3001,
+    path: './public/week4/inclass'
+  });
+} else if(argv.host) { // If we're attaching to a host, start up codesocket client.
+  codesocket.createClient({
+    host: argv.host,
+    dir: 'inclass-live'
+  });
+}
+
+
