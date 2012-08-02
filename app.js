@@ -27,4 +27,5 @@ app.get("/", function(req, res) {
     });
 });
 
-app.listen(process.env.C9_PORT || process.env.PORT || 3000);
+var server = app.listen(process.env.C9_PORT || process.env.PORT || 3000);
+console.log("WDIM493J Curriculum App is running on port " + server.address().port + " in " + app.get('env') + " mode.")
