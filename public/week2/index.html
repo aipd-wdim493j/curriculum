@@ -36,7 +36,7 @@
       <ul>
         <li>Get Git and Node.js setup on your box. (<a href="../week1/#8">Refer to last week's slide for help</a>)</li>
         <li>In your <code>curriculum/</code> folder, pull down the latest code changes with:
-          <pre class="brush: bash">$ git pull upstream</pre>
+          <pre class="brush: bash">$ git pull upstream master</pre>
         </li>
         <li>If you see <code>fatal: 'upstream' does not appear to be a git repository</code>, then add the upstream remote with:
           <pre class="brush: bash">$ git remote add upstream https://github.com/aipd-wdim493j/curriculum</pre>
@@ -183,7 +183,7 @@ $ node scraper.js http://wdim493j.herokuapp.com ul --html
     	<h1><a href="http://nodejs.org/api/modules.html">Modules</a></h1>
     	<ul>
         <li>Node modules can be more than a single <code>.js</code> file using <code>module.exports</code>.</li>  
-        <li>You can bundle multiple files together in a module by creating a directory of your module (e.g., <code>fib/</code>) and naming the main file <code>index.js</code> (e.g., <code>fib.js =&gt; code.js</code>).</li>
+        <li>You can bundle multiple files together in a module by creating a directory of your module (e.g., <code>fib/</code>) and naming the main file <code>index.js</code> (e.g., <code>fib.js =&gt; index.js</code>).</li>
         <li>Node will look for a <code>package.json</code> in the module folder, which can contain two keys:
           <pre class="brush: js">{
   "name" : "fib",
