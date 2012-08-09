@@ -2,10 +2,9 @@ var fs = require('fs');
 var express = require('express');
 var codesocket = require('./lib/codesocket');
 var argv = require('optimist').argv;
-var app = express.createServer();
+var app = express();
 
 app.use(express.static(__dirname+'/public'));
-app.set('view options', { layout: false });
 
 app.get("/", function(req, res) {
     fs.readdir('./public', function(err, files) {
