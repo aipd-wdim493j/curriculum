@@ -12,6 +12,8 @@ app.get("/", function(req, res) {
                     .filter(function(w) { return w.indexOf('week')===0 })
                     .map(function(file) {
                         if(file.indexOf('week') === 0) {
+                            app.use(express.directory(__dirname+'/public/'));
+                            console.log(__dirname+'/public/'+file+'/inclass');
                             return {
                                 title: "Week " + file.substring(4)
                                 , href: file
