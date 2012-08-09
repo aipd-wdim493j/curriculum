@@ -42,4 +42,3 @@ if(argv.server) { // If we're running as a server, start up codesocket server.
     dir: 'inclass-live'
   });
 }
-
