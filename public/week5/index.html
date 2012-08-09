@@ -32,6 +32,13 @@
     </div>
 
     <div class="slide">
+      <h1>Task 0: Install Redis</h1>
+      <ul>
+        <li>If you haven't already, <a href="#10">please install Redis</a>.</li>
+      </ul>
+    </div>
+
+    <div class="slide">
     	<h1>Homework</h1>
       <p>We'll look at GitHub for both the templating engines and Connect middleware, so push your changes to a repo we can all see.</p>
     </div>
@@ -40,10 +47,22 @@
     	<h1>Configuration</h1>
       <p>Configuring Express can look a little strange. Here's what to know:</p>
     	<ul>
-        <li>Some options ("trust proxy", "jsonp callback", etc.) have spaces. There's nothing special going on, TJ just likes spaces in his configuration options.</li>
-        <li><code>app.set("view engine", "ejs")</code> is essentially<br /><code>app.settings['view engine'] = 'ejs'</code>. (still, use <code>app.set()</code>).</li>
-        <li><code>app.enable('jsonp callback')</code> is<br /><code>app.settings['jsonp callback'] = true</code> (still, use <code>app.enable()</code>).</li>
-    		<li>And... <pre class="brush: js">app.configure('development', function() {});
+        <li>Some options ("trust proxy", "jsonp callback", etc.) have spaces.</li>
+        <li>Get/Set
+          <pre class="brush: js">app.set("view engine", "ejs")
+// is essentially:
+app.settings['view engine'] = 'ejs'
+// but, you should still use app.set().
+          </pre>
+        </li>
+        <li>Enable/Disable
+          <pre class="brush: js">app.enable('jsonp callback')
+// is basically just: 
+app.settings['jsonp callback'] = true;
+// but, you should still use app.enable()
+          </pre>
+        </li>
+    		<li>Configure<pre class="brush: js">app.configure('development', function() {});
 // is identical to
 if(app.get('env') === 'development') {}</pre>
         </li>
@@ -120,7 +139,6 @@ app.get('*', function(req, res) {
       <ul>
         <li>Redis is a key-value store.</li>
         <li>Instead of storing data in tables with columns and rows of data, Redis lets you store data using a key.</li>
-        <li>
         <li>Simply, you can use the <code>set</code> command to set the <em>key</em> of <code>foo</code> to the <em>value</em> of <code>bar</code>:
           <pre class="brush: bash">redis&gt; set foo bar
 OK</pre>
@@ -147,11 +165,11 @@ OK</pre>
           <ol>
             <li>Compile Redis:
               <pre class="brush: bash">
-$ curl -O http://redis.googlecode.com/files/redis-2.4.16.tar.gz
-$ tar xzf redis-2.4.16.tar.gz
-$ cd redis-2.4.16
-$ make
-$ src/redis-server</pre>
+curl -O http://redis.googlecode.com/files/redis-2.4.16.tar.gz
+tar xzf redis-2.4.16.tar.gz
+cd redis-2.4.16
+make
+src/redis-server</pre>
             </li>
             <li>In a new terminal, run
               <pre class="brush: bash">redis-2.4.16/src/redis-cli</pre>
@@ -165,7 +183,8 @@ $ src/redis-server</pre>
       <h1>Using Redis</h1>
       <ul>
         <li>Redis is <a href="http://redis.io/documentation">well documented</a>. Particularly, <a href="http://redis.io/commands">commands are documented very well</a>.</li>
-        <li>Let's look at SET, GET, INCR, ZINCRBY and ZREVRANGEBYSCORE</li>
+        <li>Beyond simple, key/value pairs, you can store <a href="/topics/data-types#strings">strings</a>, <a href="/topics/data-types#hashes">hashes</a>, <a href="/topics/data-types#lists">lists</a>, <a href="/topics/data-types#sets">sets</a> and <a href="/topics/data-types#sorted-sets">sorted sets</a>.</li>
+        <li>Let's look at <a href="http://redis.io/commands/set">SET</a>, <a href="http://redis.io/commands/get">GET</a>, <a href="http://redis.io/commands/incr">INCR</a>, <a href="http://redis.io/commands/zincrby">ZINCRBY</a> and <a href="http://redis.io/commands/zrevrangebyscore">ZREVRANGEBYSCORE</a></li>
       </ul>
     </div>
 
@@ -175,7 +194,14 @@ $ src/redis-server</pre>
         <li>In <code>week5/inclass/persistence</code> run:
           <pre class="brush: js">npm install redis</pre></li>
         </li>
-        <li>
+        <li>Now, require and create the redis client in <code>app.js</code>:
+          <pre class="brush: js">var redis = require('redis');
+var client = redis.createClient();</pre>
+        </li>
+        <li>Next, use the client in your <code>app.get('/')</code> route to get some data:
+          <pre class="brush: js">client.get('foo', function(err, foo) {
+  res.json({foo: foo});
+});</pre>
       </ul>
     </div>
     
@@ -188,39 +214,61 @@ $ src/redis-server</pre>
         <li>Then, set up a <code>/hits</code> route that uses one of the <a href="http://redis.io/commands#sorted_set">Sorted Set</a> commands to return an ordered list of all URLs with thei hit counts.</li>
       </ul>
     </div>
-    
+    <div class="slide title">
+      <h1><a href="http://kkovacs.eu/cassandra-vs-mongodb-vs-couchdb-vs-redis/">Cassandra vs. MongoDB v.s CouchDB vs. Redis vs. Riak vs. HBase vs. Membase vs. Neo4j</a></h1>
+    </div>
+
     <div class="slide">
       <h1><code><a href="https://github.com/caolan/async/">async</a></code></h1>
       <ul>
-        <li></li>
+        <li><a href="https://github.com/caolan/">Caolan McMahon's</a> <code>async</code> utility makes working with asynchronous code much less vomit-inducing.</li>
+        <li>You can use <code><a href="https://github.com/caolan/async#waterfall">async.waterfall()</a></code> to run one async function after another, with each function passing arguments to the next:
+          <pre class="brush: js">var async = require('async');
+          
+async.waterfall([
+  function(callback){
+    callback(null, 'one', 'two');
+  },
+  function(arg1, arg2, callback){
+    console.log(arguments);
+    callback(null, 'done');
+  }
+], function (err, result) {
+  console.log(result); // result now equals 'done'    
+});</pre>
       </ul>
     </div>
 
     <div class="slide">
-      <h1>CouchDB vs. Redis vs. MongoDB vs. Everything</h1>
+      <h1>More <code><a href="https://github.com/caolan/async/">async</a></code></h1>
       <ul>
-        <li></li>
-      </ul>
-    </div>
+        <li>You can use <code><a href="https://github.com/caolan/async#parallel">async.parallel()</a></code> to run any number of functions in parallel and then run a callback once all of the functions have completed:
+          <pre class="brush: js">var async = require('async');
 
-    <div class="slide">
-      <h1>CouchDB</h1>
-      <ul>
-        <li></li>
-      </ul>
-    </div>
-
-    <div class="slide">
-      <h1>Couchathon</h1>
-      <ul>
-        <li>Point</li>
+async.parallel([
+    function(callback){
+        setTimeout(function(){
+            callback(null, 'one');
+        }, 200);
+    },
+    function(callback){
+        setTimeout(function(){
+            callback(null, 'two');
+        }, 100);
+    },
+],
+function(err, results){
+  console.log(results) //results will equal ['one','two']
+});</pre>
       </ul>
     </div>
 
     <div class="slide">
       <h1>CSS Abstractions</h1>
       <ul>
-        <li></li>
+        <li>We don't have enough time to do a proper Sass vs. LESS vs. Stylus (Though, <a href="http://net.tutsplus.com/tutorials/html-css-techniques/sass-vs-less-vs-stylus-a-preprocessor-shootout/">Nettuts+ already did</a>).</li>
+        <li>Express does have out-of-the-box support for LESS and Stylus. Let's look in <code>week5/inclass/css</code> to see what that support looks like.</li>
+        <li>There appears to be <a href="https://github.com/andrew/node-sass/">a Node module for Sass that works with Express</a> as a Connect middleware, but I haven't tested it and I'm not sure it works on Windows now.
       </ul>
     </div>
 
