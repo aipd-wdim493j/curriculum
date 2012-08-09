@@ -1,0 +1,201 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+    <title>Week 4 &mdash; WDIM493J Node.js</title>
+    <!-- Slippy core file and dependencies -->
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.min.js"></script>
+    <script type="text/javascript" src="../lib/slippy/src/jquery.history.js"></script>
+    <script type="text/javascript" src="../lib/slippy/src/slippy.js"></script>
+    <!-- Slippy structural styles -->
+    <link type="text/css" rel="stylesheet" href="../lib/slippy/src/slippy.css"/>
+    <!-- Syntax highlighting core file  -->
+    <script type="text/javascript" src="../lib/slippy/src/highlighter/shCore.js"></script>
+    <!-- Syntax highlighting brushes, remove those you don't need -->
+    <script type="text/javascript" src="../lib/slippy/src/highlighter/shBrushBash.js"></script>
+    <script type="text/javascript" src="../lib/slippy/src/highlighter/shBrushCss.js"></script>
+    <script type="text/javascript" src="../lib/slippy/src/highlighter/shBrushJScript.js"></script>
+    <script type="text/javascript" src="../lib/slippy/src/highlighter/shBrushXml.js"></script>
+    <!-- Syntax highlighting styles-->
+    <link type="text/css" rel="stylesheet" href="../lib/slippy/src/highlighter/shCore.css"/>
+    <link type="text/css" rel="stylesheet" href="../lib/slippy/src/highlighter/shThemeRDark.css"/>
+
+
+    <!-- Common Styles -->
+    <link href="http://fonts.googleapis.com/css?family=Terminal+Dosis+Light:regular&v1" rel="stylesheet" type="text/css" >
+    <link type="text/css" rel="stylesheet" href="../css/slippy-wdim.css" />
+  </head>
+  <body>
+    <div class="slide title" data-layout="title">
+      <h1>Node.js</h1>
+      <h2>Week 4</h2>
+    </div>
+
+    <div class="slide">
+    	<h1>Homework</h1>
+      <p>Email me (<a href="mailto:pwooley@aii.edu">pwooley@aii.edu</a>) your Heroku app URL and Git repo.</p>
+    </div>
+    
+    <div class="slide">
+    	<h1>Heroku Express'd</h1>
+    	<ol>
+    		<li>[Someone's Cool Express App]</li>
+    		<li>[Someone Else's Cool Express App]</li>
+    	</ol>
+    </div>
+
+    <div class="slide title">
+    	<h1><a href="http://expressjs.com/">Express 3.0</a></h1>
+      <h2>Surprise!</h2>
+      <p style="text-align:center;">(HT <a href="https://twitter.com/n8ji">@n8ji</a>)</p>
+    </div>
+
+    <div class="slide">
+    	<h1><code>express</code></h1>
+      <ul>
+        <li>The <code>express</code> executable is a great place to start an express app.</li>
+        <li>To use it, run: <pre class="brush: bash">$ npm install express -g</pre></li>
+        <li>Let's <code>cd public/week4/inclass/routes</code> and run <code>express --help</code> to see what we can make this thing do.</li>
+      </ul>
+    </div>
+
+    <div class="slide">
+    	<h1>Routing</h1>
+      <ul>
+        <li>When routing, you can bind route handlers to HTTP Verbs (GET, POST, PUT, &amp; DELETE):
+          <pre class="brush: js">app.get('/register', function(req, res) {
+  res.render('login');
+});
+app.post('/register', function(req, res) {
+  registerUser(req.body, function(err) {
+    res.redirect('/account');
+  });
+});</pre>
+        </li>
+        <li>You can also stack route handlers and pass control via <code>next()</code>:
+          <pre class="brush: js">var auth = function(req, res, next) {
+  var user = req.params.user, pass = req.params.pass;
+  if(user === "admin" && pass === "123") next();
+  else res.redirect('/');
+}
+
+app.get('/admin', auth, function(req, res) {
+  res.render('admin');
+});
+        </li>
+      </ul>
+    </div>
+
+    <div class="slide">
+    	<h1>More Routing</h1>
+    	<ul>
+    		<li>Like we talked about last week, you can capture parameters in your routes:
+          <pre class="brush: js">app.get('/user/:name', function(req, res) {
+  res.send('username is: ' + req.params.name);
+});</pre>
+        </li>
+        <li>Plus, you can take create param handlers that are invoked when you capture a certain param in your route:
+          <pre class="brush: js">var users = {peterwooley: {name: "Peter Wooley", age: 26}};
+app.param('name', function(req, res, next, name) {
+  req.user = users[name];
+  next();
+});
+app.get('/user/:name', function(req, res) {
+  res.send(req.user.name + " is " + req.user.age + " years old.");
+});</pre>
+    	</ul>
+    </div>
+
+    <div class="slide">
+    	<h1>Even More Routing</h1>
+      <ul>
+        <li>If you want to run a route handler for all requests to the server, you can:
+          <pre class="brush: js">app.all('*', function(req, res, next) {
+  // Every request is sent through here
+  next()
+}</pre>
+        </li>
+        <li>If you want to restrict a specific section of the site, use:
+        <pre class="brush: js">app.all('/admin/*', function(req, res, next) {
+  // Every request starting with /admin is sent through here
+  next()
+}</pre>
+    </div>
+
+    <div class="slide">
+    	<h1>Templating</h1>
+      <ul>
+        <li>Express works with 17 templating engines thanks to <a href="https://github.com/visionmedia/consolidate.js">consolidate.js</a>.</li>
+        <li>By default, Express looks for templates to render in the <code>views/</code> folder (change it with <code>app.set('views', __dirname + '/other-folder')</code>).</li>
+      </ul>
+    </div>
+
+    <div class="slide">
+    	<h1>Templatathon</h1>
+      <p>On your own, pick a <a href="https://github.com/visionmedia/consolidate.js/">templating language</a> (only one person per langauge) and implement the following using Express in <code>public/week4/inclass/templating</code>:</p>
+      <ol>
+        <li>Create an index view (aka template) with a header and a form that accepts an email address and comment. Have the form submit to the same page over POST (e.g., <code>&lt;form action="" method="post"&gt;</code>). Render this view using the route <code>app.get('/', handler)</code>.</li>
+        <li>Create another view  that displays the same header as the first page, along with the email address and comment sent from the form. Route it with <code>app.post('/', handler)</code>.</li>
+        <li>At the end, you should be able to browse to your app, fill out the form, hit the submit button and be shown a page with the values you just entered.</li>
+        <li>Once complete, <code>git push</code> your changes to GitHub so we can all see how the different templating languages feel.</li>
+      </ul>
+    </div>
+
+    <div class="slide">
+    	<h1>Configuration</h1>
+      <p>Configuring Express can look a little strange. Here's what to know:</p>
+    	<ul>
+        <li>Some options ("trust proxy", "jsonp callback", etc.) have spaces. There's nothing special going on, TJ just likes spaces in his configuration options.</li>
+        <li><code>app.set("view engine", "ejs")</code> is essentially<br /><code>app.settings['view engine'] = 'ejs'</code>. (still, use <code>app.set()</code>).</li>
+        <li><code>app.enable('jsonp callback')</code> is<br /><code>app.settings['jsonp callback'] = true</code> (still, use <code>app.enable()</code>).</li>
+    		<li>And... <pre class="brush: js">app.configure('development', function() {});
+// is identical to
+if(app.get('env') === 'development') {}</pre>
+        </li>
+    	</ul>
+    </div>
+
+    <div class="slide">
+    	<h1><a href="http://www.senchalabs.org/connect/">Connect</a></h1>
+    	<ul>
+    		<li>Express is built right on top of <a href="http://www.senchalabs.org/connect/">Sencha's Connect</a></li>
+    		<li>You can use any of the 17 incldued middleware packages.</li>
+        <li>Plus, there is <a href="https://github.com/senchalabs/connect/wiki">a ton of 3rd Party middleware</a>.</li>
+    		<li>In Express, you can use the built-in middleware like so:
+        <pre class="brush: js">app.use(express.favicon());
+app.use(express.logger('dev'));
+app.use(express.bodyParser());
+app.use(express.methodOverride());</pre></li>
+    	</ul>
+    </div>
+
+    <div class="slide">
+    	<h1>Middlewareathon</h1>
+    	<p>On your own, pick a Connect middleware (<a href="http://www.senchalabs.org/connect/">bundled</a> or <a href="https://github.com/senchalabs/connect/wiki">3rd party</a>), learn about it, use it, push the changes to GitHub and present to us why we'd want to use it.</p>
+    </div>
+
+    <div class="slide title">
+      <h1>Done!</h1>
+      <h2><a href="homework.html">Homework</a></h2>
+    </div>
+
+    <div class="layout" data-name="title">
+      <content></content>
+      <div class="footer">
+        <span class="left">Peter Wooley</span>
+        <span class="right">WDIM493J</span>
+        <span class="left">Twitter <a href="http://twitter.com/peterwooley">@peterwooley</a></span>
+        <span class="right"><a href="http://wdim493j.herokuapp.com">Notes online</a> (and <a href="https://github.com/aipd-wdim493j/curriculum">on GitHub</a>)</span>
+        <hr class="defloat" />
+      </div>
+    </div>
+
+    <div class="layout nofooter" data-name="default">
+      <content></content>
+    </div>
+  
+    <!-- Common Scripts -->
+    <script src="../js/jquery.noisy.min.js"></script>
+    <script src="../js/index.js"></script>
+  </body>
+</html>

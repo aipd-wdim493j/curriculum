@@ -1,0 +1,23 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Ender's Game</title>
+  <script src="ender.js"></script>
+  <script>
+    $.domReady(function() {
+      $("h1 del")
+        .css({
+          "display": "inline-block",
+          "transform": "rotate(-22deg)",
+        })
+        .click(function() {
+          $(this).css({transform: "rotate(22deg)"});
+        })
+    });
+  </script>
+</head>
+<body>
+  <h1>Ender's <del>Game</del></h1>	
+</body>
+</html>
