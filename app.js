@@ -1,10 +1,8 @@
 var fs = require('fs'),
     express = require('express')
-    , app = express.createServer();
+    , app = express();
 
 app.use(express.static(__dirname+'/public'));
-app.set('view options', { layout: false });
-
 
 app.get("/", function(req, res) {
     fs.readdir('./public', function(err, files) {
