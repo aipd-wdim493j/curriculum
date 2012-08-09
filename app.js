@@ -28,12 +28,13 @@ app.get("/", function(req, res) {
     });
 });
 
-app.listen(process.env.C9_PORT || process.env.PORT || 3000);
+var server = app.listen(process.env.C9_PORT || process.env.PORT || 3000);
+console.log("WDIM493J Curriculum App is running on port " + server.address().port + " in " + app.get('env') + " mode.")
 
 if(argv.server) { // If we're running as a server, start up codesocket server.
   codesocket.createServer({
     port: 3001,
-    path: './public/week4/inclass'
+    path: './public/week5/inclass'
   });
 } else if(argv.host) { // If we're attaching to a host, start up codesocket client.
   codesocket.createClient({
@@ -41,5 +42,4 @@ if(argv.server) { // If we're running as a server, start up codesocket server.
     dir: 'inclass-live'
   });
 }
-
 
