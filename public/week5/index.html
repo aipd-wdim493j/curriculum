@@ -1,0 +1,256 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+    <title>Week 5 &mdash; WDIM493J Node.js</title>
+    <!-- Slippy core file and dependencies -->
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.min.js"></script>
+    <script type="text/javascript" src="../lib/slippy/src/jquery.history.js"></script>
+    <script type="text/javascript" src="../lib/slippy/src/slippy.js"></script>
+    <!-- Slippy structural styles -->
+    <link type="text/css" rel="stylesheet" href="../lib/slippy/src/slippy.css"/>
+    <!-- Syntax highlighting core file  -->
+    <script type="text/javascript" src="../lib/slippy/src/highlighter/shCore.js"></script>
+    <!-- Syntax highlighting brushes, remove those you don't need -->
+    <script type="text/javascript" src="../lib/slippy/src/highlighter/shBrushBash.js"></script>
+    <script type="text/javascript" src="../lib/slippy/src/highlighter/shBrushCss.js"></script>
+    <script type="text/javascript" src="../lib/slippy/src/highlighter/shBrushJScript.js"></script>
+    <script type="text/javascript" src="../lib/slippy/src/highlighter/shBrushXml.js"></script>
+    <!-- Syntax highlighting styles-->
+    <link type="text/css" rel="stylesheet" href="../lib/slippy/src/highlighter/shCore.css"/>
+    <link type="text/css" rel="stylesheet" href="../lib/slippy/src/highlighter/shThemeRDark.css"/>
+
+
+    <!-- Common Styles -->
+    <link href="http://fonts.googleapis.com/css?family=Terminal+Dosis+Light:regular&v1" rel="stylesheet" type="text/css" >
+    <link type="text/css" rel="stylesheet" href="../css/slippy-wdim.css" />
+  </head>
+  <body>
+    <div class="slide title" data-layout="title">
+      <h1>Node.js</h1>
+      <h2>Week 5</h2>
+    </div>
+
+    <div class="slide">
+    	<h1>Homework</h1>
+      <p>We'll look at GitHub for both the templating engines and Connect middleware, so push your changes to a repo we can all see.</p>
+    </div>
+    
+    <div class="slide">
+    	<h1>Configuration</h1>
+      <p>Configuring Express can look a little strange. Here's what to know:</p>
+    	<ul>
+        <li>Some options ("trust proxy", "jsonp callback", etc.) have spaces. There's nothing special going on, TJ just likes spaces in his configuration options.</li>
+        <li><code>app.set("view engine", "ejs")</code> is essentially<br /><code>app.settings['view engine'] = 'ejs'</code>. (still, use <code>app.set()</code>).</li>
+        <li><code>app.enable('jsonp callback')</code> is<br /><code>app.settings['jsonp callback'] = true</code> (still, use <code>app.enable()</code>).</li>
+    		<li>And... <pre class="brush: js">app.configure('development', function() {});
+// is identical to
+if(app.get('env') === 'development') {}</pre>
+        </li>
+    	</ul>
+    </div>
+
+    <div class="slide">
+      <h1><a href="http://ender.no.de/">Ender</a></h1>
+      <ul>
+        <li>It's the no-library libary.</li>
+        <li>Really, Ender is a Node app that you use to compile a custom JavaScript file for use in the browser.</li>
+        <li>In the end, you'll end up with <code>ender.js</code> and <code>ender.min.js</code>, which you user in client-side JavaScript.</li>
+        <li>Why, you ask? "In the browser - small, loosely coupled modules are the future and large, tightly-bound monolithic libraries are the past!"</li>
+        <li>To get started with Ender, let's run:
+          <pre class="brush: js">$ npm install ender -g
+$ cd week5/inclass/ender
+$ ender build jeesh</pre>
+        </li>
+      </ul>
+    </div>
+
+    <div class="slide">
+      <h1>Ender !== jQuery</h1>
+      <ul>
+        <li>Ender is not jQuery, but the package we just used (the <code>jeesh</code>) is designed to feel like it.</li>
+        <li>Open up <code>week5/inclass/ender/index.html</code> in your text editor.</li>
+        <li>Note how Ender makes use of the <code>$</code> variable. Ender packages can expose themselves via <code>$</code> along with being available via <code>require('package-name')</code>.</li>
+        <li>Let's play with another package, run:
+          <pre class="brush: bash">$ ender add moment</pre>
+        <p>If you're on Windows, run:</p>
+          <pre class="brush: bash">&gt; ender.cmd add moment</pre>
+        </li>
+        <li>In <code>week5/inclass/ender/index.html</code>, add this at the end of the <code>&lt;script&gt;</code> tag:
+          <pre class="brush: js">var moment = require('moment');
+var xmas =  moment("2012-12-25", "YYYY-MM-DD").fromNow();
+console.log("Christmas is " + xmas);</pre>
+              </ul>
+    </div>
+
+    <div class="slide">
+      <h1>Avatar: The last AirbEnder</h1>
+      <p>You can see the size of your minified build and all of its packages by running:</p>
+      <pre class="brush: bash">$ ender info</pre>
+      <p>If you're on Windows:</p>
+      <pre class="brush: bash">&gt; ender.cmd info</pre>
+      <p>You should see something like:
+      <pre class="brush: bash">Your current minified and compressed library size is 19.3 kB
+
+Active packages:
+├── moment@1.7.0 - Parse, manipulate, and display dates.
+└─┬ jeesh@0.0.6 - The official starter pack for Ender.
+  ├── bonzo@1.2.1 - Library agnostic, extensible DOM utility
+  ├── bean@0.4.11-1 - an events api for javascript
+  ├── domready@0.2.11 - bullet proof DOM ready method
+  └── qwery@3.3.11 - blazing fast CSS3 query selector engine
+      </pre>
+    </div>
+
+    <div class="slide">
+      <h1>Persistence</h1>
+      <ul>
+        <li>Node web apps run as a long-running process, which gives a a quick-and-dirty form of persistence:
+          <pre class="brush: js">var hits = 0; // Hit counter
+app.get('*', function(req, res) {
+  hits++; // Increase the hit counter for each request
+});</pre>
+        </li>
+        <li>As soon as the app exits, though, your data's gone.</li>
+      </ul>
+    </div>
+  
+    <div class="slide">
+      <h1>Enter the <del>Dragon</del> <a href="http://redis.io"><ins>Redis</ins></a></h1>
+      <ul>
+        <li>Redis is a key-value store.</li>
+        <li>Instead of storing data in tables with columns and rows of data, Redis lets you store data using a key.</li>
+        <li>
+        <li>Simply, you can use the <code>set</code> command to set the <em>key</em> of <code>foo</code> to the <em>value</em> of <code>bar</code>:
+          <pre class="brush: bash">redis&gt; set foo bar
+OK</pre>
+        </li>
+        <li>Then, you can <code>get</code> the value using:
+          <pre class="brush: bash">redis&gt; get foo
+"bar"</pre>
+      </ul>
+    </div>
+
+    <div class="slide">
+      <h1>Installing Redis</h1>
+      <ul>
+        <li>On Windows:
+          <ol>
+            <li>Download <a href="https://github.com/downloads/dmajkic/redis/redis-2.4.5-win32-win64.zip">redis-2.4.5-win32-win64.zip</a></li>
+            <li>Copy the <code>64bit/</code> folder to your desktop</li>
+            <li>Double-click <code>redis-server.exe</code></li>
+            <li>Double-click <code>redis-cli.exe</code></li>
+            <li>Grab a snickers.</li>
+          </ol>
+        </li>
+        <li>On *nix:
+          <ol>
+            <li>Compile Redis:
+              <pre class="brush: bash">
+$ curl -O http://redis.googlecode.com/files/redis-2.4.16.tar.gz
+$ tar xzf redis-2.4.16.tar.gz
+$ cd redis-2.4.16
+$ make
+$ src/redis-server</pre>
+            </li>
+            <li>In a new terminal, run
+              <pre class="brush: bash">redis-2.4.16/src/redis-cli</pre>
+            </li>
+          </ol>
+        </li>
+      </ul>
+    </div>
+
+    <div class="slide">
+      <h1>Using Redis</h1>
+      <ul>
+        <li>Redis is <a href="http://redis.io/documentation">well documented</a>. Particularly, <a href="http://redis.io/commands">commands are documented very well</a>.</li>
+        <li>Let's look at SET, GET, INCR, ZINCRBY and ZREVRANGEBYSCORE</li>
+      </ul>
+    </div>
+
+    <div class="slide">
+      <h1>Redis in Node</h1>
+      <ul>
+        <li>In <code>week5/inclass/persistence</code> run:
+          <pre class="brush: js">npm install redis</pre></li>
+        </li>
+        <li>
+      </ul>
+    </div>
+    
+    <div class="slide">
+      <h1>Hitathon</h1>
+      <p>Using Redis in <code>week5/inclass/persistence/app.js</code>, keep track of how many hits <em title="app.get('*', function() {})">every</em> URL is getting and then show an ordered list of all URLs with their hit counts at <code>/hits</code>.</p>
+      <ul>
+        <li>Create a route that runs for every request made in an Express app.</li>
+        <li>Use <code><a href="http://redis.io/commands/zincrby">ZINCRBY</a></code> (In Node, <code>client.zincrby()</code>) to increment the score (hit count) of an item (URL) in a sorted set.</li>
+        <li>Then, set up a <code>/hits</code> route that uses one of the <a href="http://redis.io/commands#sorted_set">Sorted Set</a> commands to return an ordered list of all URLs with thei hit counts.</li>
+      </ul>
+    </div>
+    
+    <div class="slide">
+      <h1><code><a href="https://github.com/caolan/async/">async</a></code></h1>
+      <ul>
+        <li></li>
+      </ul>
+    </div>
+
+    <div class="slide">
+      <h1>CouchDB vs. Redis vs. MongoDB vs. Everything</h1>
+      <ul>
+        <li></li>
+      </ul>
+    </div>
+
+    <div class="slide">
+      <h1>CouchDB</h1>
+      <ul>
+        <li></li>
+      </ul>
+    </div>
+
+    <div class="slide">
+      <h1>Couchathon</h1>
+      <ul>
+        <li>Point</li>
+      </ul>
+    </div>
+
+    <div class="slide">
+      <h1>CSS Abstractions</h1>
+      <ul>
+        <li></li>
+      </ul>
+    </div>
+
+    <div class="slide title">
+      <h1>Authentication</h1>
+      <h2>Next Week</h2>
+    </div>
+
+    <div class="slide title">
+      <h1>Done!</h1>
+      <h2><a href="homework.html">Homework</a></h2>
+    </div>
+
+    <div class="layout" data-name="title">
+      <content></content>
+      <div class="footer">
+        <span class="left">Peter Wooley</span>
+        <span class="right">WDIM493J</span>
+        <span class="left">Twitter <a href="http://twitter.com/peterwooley">@peterwooley</a></span>
+        <span class="right"><a href="http://wdim493j.herokuapp.com">Notes online</a> (and <a href="https://github.com/aipd-wdim493j/curriculum">on GitHub</a>)</span>
+        <hr class="defloat" />
+      </div>
+    </div>
+
+    <div class="layout nofooter" data-name="default">
+      <content></content>
+    </div>
+  
+    <!-- Common Scripts -->
+    <script src="../js/jquery.noisy.min.js"></script>
+    <script src="../js/index.js"></script>
+  </body>
+</html>
