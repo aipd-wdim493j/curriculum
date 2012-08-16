@@ -4,6 +4,7 @@ var fs = require('fs'),
 
 app.set('port', 3000);
 app.use(express.static(__dirname+'/public'));
+app.use(express.logger('dev'));
 
 app.get("/", function(req, res) {
     fs.readdir('./public', function(err, files) {
@@ -14,7 +15,6 @@ app.get("/", function(req, res) {
                     .map(function(file) {
                         if(file.indexOf('week') === 0) {
                             app.use(express.directory(__dirname+'/public/'));
-                            console.log(__dirname+'/public/'+file+'/inclass');
                             return {
                                 title: "Week " + file.substring(4)
                                 , href: file
