@@ -4,7 +4,6 @@ var fs = require('fs'),
 
 app.set('port', 3000);
 app.use(express.static(__dirname+'/public'));
-app.use(express.directory(__dirname+'/public/'));
 app.use(express.logger('dev'));
 
 app.get("/", function(req, res) {
@@ -27,6 +26,9 @@ app.get("/", function(req, res) {
         });
     });
 });
+
+// This needs to be declared after the / route so it won't show a directory on the main page.
+app.use(express.directory(__dirname+'/public/'));
 
 var server = app.listen(process.env.C9_PORT || process.env.PORT || app.get('port'));
 console.log("WDIM493J Curriculum App is running on port " + app.get('port') + " in " + app.get('env') + " mode.")
