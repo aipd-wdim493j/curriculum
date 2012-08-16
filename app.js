@@ -2,6 +2,7 @@ var fs = require('fs'),
     express = require('express')
     , app = express();
 
+app.set('port', 3000);
 app.use(express.static(__dirname+'/public'));
 
 app.get("/", function(req, res) {
@@ -27,5 +28,5 @@ app.get("/", function(req, res) {
     });
 });
 
-var server = app.listen(process.env.C9_PORT || process.env.PORT || 3000);
-console.log("WDIM493J Curriculum App is running on port " + server.address().port + " in " + app.get('env') + " mode.")
+var server = app.listen(process.env.C9_PORT || process.env.PORT || app.get('port'));
+console.log("WDIM493J Curriculum App is running on port " + app.get('port') + " in " + app.get('env') + " mode.")
