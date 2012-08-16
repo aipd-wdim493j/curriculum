@@ -33,13 +33,13 @@
 
     <div class="slide title">
       <h1>Get In Class Files Live</h1>
-      <h2><a href="http://peterwooley.com:3000/week6">http://peterwooley.com:3000/week6</a></h2>
+      <h2><a href="http://peterwooley.com:1337/week6">http://peterwooley.com:1337/week6</a></h2>
     </div>
 
     <div class="slide">
       <h1>Watch Class Remotely</h1>
       <ul>
-        <li>I'll be using Google+'s Hangouts on Air. <a href="https://plus.google.com/108001677297689937928/">Fin the Live Stream on my Google+ page</a>.</li>
+        <li>I'll be using Google+'s Hangouts on Air. <a href="https://plus.google.com/108001677297689937928/">Find the Live Stream on my Google+ page</a>.</li>
         <li>After the class is over, you can <a href="http://www.youtube.com/peterwooley">find the recording on my YouTube page</a>.</li>
       </ul>
     </div>
@@ -115,13 +115,13 @@ function(err, results){
     <div class="slide">
       <h1>Authentication</h1>
       <ul>
-        <li>Authentication in web apps is often trick, as you have to handle:
+        <li>Authentication in web apps is often trickt, as you have to handle:
           <li>Routing (<code>/login</code>, <code>/logout</code>, <code>/register</code>, etc.)</li>
           <li>Sessions (using cookies, for example)</li>
           <li>Password hashing</li>
           <li>User data persistance</li>
         </li>
-        <li>In Node, there are 2 good modules for making authentication easier: <a href="http://everyauth.com/">everyauth</a> and <a href="http://passportjs.org/">Passport</a>.</li>
+        <li>In Node, there are two good modules for making authentication easier: <a href="http://everyauth.com/">everyauth</a> and <a href="http://passportjs.org/">Passport</a>.</li>
       </ul>
     </div>
 
@@ -131,7 +131,7 @@ function(err, results){
         <li>We're going to use <a href="http://passportjs.org/">Passport</a>.</li>
         <li>Passport supports username/password authentication (which we'll be using) as well as Google, Facebook, Twitter and other auth providers.</li>
         <li>We'll just be using local username/password authentication, but <a href="http://passportjs.org/guide/index.html">the docs</a> provide details on using the different authentication schemes.</li>
-        <li>We'll be spending some time on this so:
+        <li>Let's spend some time on this in:
           <pre class="brush: bash">cd week6/inclass/auth</pre>
         </li>
       </ul>
@@ -141,7 +141,7 @@ function(err, results){
       <h1>Registerathon</h1>
       <p>Using our Passport authentication app, allow users to register new accounts and login.</p>
       <ul>
-        <li>Inside of the <code>app.post('/register')</code> route in <code>week6/inclass/auth/app.js</code>, add the code necessary to add a new user using the from data sent from <code>views/register.jade</code>.</li>
+        <li>Inside of the <code>app.post('/register')</code> route in <code>week6/inclass/auth/app.js</code>, add the code necessary to add a new user using the form data sent from <code>views/register.jade</code>.</li>
         <li>If the user doesn't enter all three fields (username, password and email), send them back to <code>/register</code> with an error message.</li>
         <li>If the user succeeds in registering a new user, send them to <code>/login</code> so they can login as their newly-created user.</li>
         <li>Note that you will need to create a hash of the provided password before storing the new user.</li>
@@ -150,7 +150,7 @@ function(err, results){
 
     <div class="slide">
       <h1><a href="http://couchdb.apache.org/">CouchDB</a></h1>
-      <p><a href="http://couchdb.apache.org/">Apache CouchDB™</a> is a database that uses JSON for documents, JavaScript for MapReduce queries, and regular HTTP for an API.</p>
+      <p><a href="http://couchdb.apache.org/">Apache CouchDB</a> is a database that uses JSON for documents, JavaScript for MapReduce queries, and regular HTTP for an API.</p>
       <ul>
         <li>First things first, we need to install CouchDB:
           <ul>
@@ -162,7 +162,7 @@ function(err, results){
     </div>
 
     <div class="slide">
-      <h1>Using Databases, Documents &amp; Views</h1>
+      <h1>Using Databases &amp; Documents</h1>
       <ul>
         <li>Couch ships with a PHPMyAdmin-like app called Futon. After CouchDB has started, you should be able to access Futon here: <a href="http://127.0.0.1:5984/_utils/">http://127.0.0.1:5984/_utils/</a>.</li>
         <li>CouchDB segments data into Databases. In Futon, click "Create Database..." and make a new database with the name "auth".</li>
