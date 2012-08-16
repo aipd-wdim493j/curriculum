@@ -4,6 +4,7 @@ var fs = require('fs'),
 
 app.set('port', 3000);
 app.use(express.static(__dirname+'/public'));
+app.use(express.directory(__dirname+'/public/'));
 app.use(express.logger('dev'));
 
 app.get("/", function(req, res) {
@@ -14,7 +15,6 @@ app.get("/", function(req, res) {
                     .filter(function(w) { return w.indexOf('week')===0 })
                     .map(function(file) {
                         if(file.indexOf('week') === 0) {
-                            app.use(express.directory(__dirname+'/public/'));
                             return {
                                 title: "Week " + file.substring(4)
                                 , href: file
