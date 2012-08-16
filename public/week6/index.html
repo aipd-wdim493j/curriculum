@@ -1,0 +1,255 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+    <title>Week 6 &mdash; WDIM493J Node.js</title>
+    <!-- Slippy core file and dependencies -->
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.min.js"></script>
+    <script type="text/javascript" src="../lib/slippy/src/jquery.history.js"></script>
+    <script type="text/javascript" src="../lib/slippy/src/slippy.js"></script>
+    <!-- Slippy structural styles -->
+    <link type="text/css" rel="stylesheet" href="../lib/slippy/src/slippy.css"/>
+    <!-- Syntax highlighting core file  -->
+    <script type="text/javascript" src="../lib/slippy/src/highlighter/shCore.js"></script>
+    <!-- Syntax highlighting brushes, remove those you don't need -->
+    <script type="text/javascript" src="../lib/slippy/src/highlighter/shBrushBash.js"></script>
+    <script type="text/javascript" src="../lib/slippy/src/highlighter/shBrushCss.js"></script>
+    <script type="text/javascript" src="../lib/slippy/src/highlighter/shBrushJScript.js"></script>
+    <script type="text/javascript" src="../lib/slippy/src/highlighter/shBrushXml.js"></script>
+    <!-- Syntax highlighting styles-->
+    <link type="text/css" rel="stylesheet" href="../lib/slippy/src/highlighter/shCore.css"/>
+    <link type="text/css" rel="stylesheet" href="../lib/slippy/src/highlighter/shThemeRDark.css"/>
+
+
+    <!-- Common Styles -->
+    <link href="http://fonts.googleapis.com/css?family=Terminal+Dosis+Light:regular&v1" rel="stylesheet" type="text/css" >
+    <link type="text/css" rel="stylesheet" href="../css/slippy-wdim.css" />
+  </head>
+  <body>
+    <div class="slide title" data-layout="title">
+      <h1>Node.js</h1>
+      <h2>Week 6</h2>
+    </div>
+
+    <div class="slide title">
+      <h1>Get In Class Files Live</h1>
+      <h2><a href="http://peterwooley.com:3000/week6">http://peterwooley.com:3000/week6</a></h2>
+    </div>
+
+    <div class="slide">
+      <h1>Watch Class Remotely</h1>
+      <ul>
+        <li>I'll be using Google+'s Hangouts on Air. <a href="https://plus.google.com/108001677297689937928/">Fin the Live Stream on my Google+ page</a>.</li>
+        <li>After the class is over, you can <a href="http://www.youtube.com/peterwooley">find the recording on my YouTube page</a>.</li>
+      </ul>
+    </div>
+
+    <div class="slide">
+      <h1>Homework</h1>
+      <ul>
+        <li>Your homework is now graded and your midterm grades are in.</li>
+        <li>If you have yet to turn in an assignment, you can still do so (at a 10% grade reduction).</li>
+        <li>If you rework an assignment you already turned in, let me know and I'll regrade it.</li>
+      </ul>
+    </div>
+
+    <div class="slide title">
+      <h1>The Web Can Do That!?</h1>
+      <iframe width="76%" style="padding:0 12%" height="56.25%" src="http://www.youtube.com/embed/X_ek1wSe66o" frameborder="0" allowfullscreen="allowfullscreen"></iframe>
+    </div>
+
+    <div class="slide">
+      <h1>Khan Academy CS</h1>
+      <ul>
+        <li>John Resig (of jQuery fame) just launched <a href="http://www.khanacademy.org/cs">a Computer Science curriculum on Khan Academy</a> that uses JavaScript (well, Processing.js) to teach CS Concepts.</li>
+        <li>It uses an in-browser code editor (<a href="http://ace.ajax.org/">Ace</a>) alongside a <code>&lt;canvas /&gt;</code> tag, which renders your code after every keystroke.</li>
+        <li>It's like <a href="http://www.chris-granger.com/2012/04/12/light-table---a-new-ide-concept/">Light Table</a>, but its main purpose is as a teaching tool.</li>
+      </ul>
+    </div>
+
+    <div class="slide">
+      <h1><code><a href="https://github.com/caolan/async/">async</a></code></h1>
+      <ul>
+        <li><a href="https://github.com/caolan/">Caolan McMahon's</a> <code>async</code> utility makes working with asynchronous code much less vomit-inducing.</li>
+        <li>You can use <code><a href="https://github.com/caolan/async#waterfall">async.waterfall()</a></code> to run one async function after another, with each function passing arguments to the next:
+          <pre class="brush: js">var async = require('async');
+          
+async.waterfall([
+  function(callback){
+    callback(null, 'one', 'two');
+  },
+  function(arg1, arg2, callback){
+    console.log(arguments);
+    callback(null, 'done');
+  }
+], function (err, result) {
+  console.log(result); // result now equals 'done'    
+});</pre>
+      </ul>
+    </div>
+
+    <div class="slide">
+      <h1>More <code><a href="https://github.com/caolan/async/">async</a></code></h1>
+      <ul>
+        <li>You can use <code><a href="https://github.com/caolan/async#parallel">async.parallel()</a></code> to run any number of functions in parallel and then run a callback once all of the functions have completed:
+          <pre class="brush: js">var async = require('async');
+
+async.parallel([
+    function(callback){
+        setTimeout(function(){
+            callback(null, 'one');
+        }, 200);
+    },
+    function(callback){
+        setTimeout(function(){
+            callback(null, 'two');
+        }, 100);
+    },
+],
+function(err, results){
+  console.log(results) //results will equal ['one','two']
+});</pre>
+      </ul>
+    </div>
+
+    <div class="slide">
+      <h1>Authentication</h1>
+      <ul>
+        <li>Authentication in web apps is often trick, as you have to handle:
+          <li>Routing (<code>/login</code>, <code>/logout</code>, <code>/register</code>, etc.)</li>
+          <li>Sessions (using cookies, for example)</li>
+          <li>Password hashing</li>
+          <li>User data persistance</li>
+        </li>
+        <li>In Node, there are 2 good modules for making authentication easier: <a href="http://everyauth.com/">everyauth</a> and <a href="http://passportjs.org/">Passport</a>.</li>
+      </ul>
+    </div>
+
+    <div class="slide">
+      <h1>Passport</h1>
+      <ul>
+        <li>We're going to use <a href="http://passportjs.org/">Passport</a>.</li>
+        <li>Passport supports username/password authentication (which we'll be using) as well as Google, Facebook, Twitter and other auth providers.</li>
+        <li>We'll just be using local username/password authentication, but <a href="http://passportjs.org/guide/index.html">the docs</a> provide details on using the different authentication schemes.</li>
+        <li>We'll be spending some time on this so:
+          <pre class="brush: bash">cd week6/inclass/auth</pre>
+        </li>
+      </ul>
+    </div>
+
+    <div class="slide">
+      <h1>Registerathon</h1>
+      <p>Using our Passport authentication app, allow users to register new accounts and login.</p>
+      <ul>
+        <li>Inside of the <code>app.post('/register')</code> route in <code>week6/inclass/auth/app.js</code>, add the code necessary to add a new user using the from data sent from <code>views/register.jade</code>.</li>
+        <li>If the user doesn't enter all three fields (username, password and email), send them back to <code>/register</code> with an error message.</li>
+        <li>If the user succeeds in registering a new user, send them to <code>/login</code> so they can login as their newly-created user.</li>
+        <li>Note that you will need to create a hash of the provided password before storing the new user.</li>
+      </ul>
+    </div>
+
+    <div class="slide">
+      <h1><a href="http://couchdb.apache.org/">CouchDB</a></h1>
+      <p><a href="http://couchdb.apache.org/">Apache CouchDB™</a> is a database that uses JSON for documents, JavaScript for MapReduce queries, and regular HTTP for an API.</p>
+      <ul>
+        <li>First things first, we need to install CouchDB:
+          <ul>
+            <li>On Windows or OS X: <a href="http://couchdb.apache.org/#download">http://couchdb.apache.org/#download</a></li>
+            <li>On Ubuntu, follow the directions here: <a href="https://github.com/iriscouch/build-couchdb">https://github.com/iriscouch/build-couchdb</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+
+    <div class="slide">
+      <h1>Using Databases, Documents &amp; Views</h1>
+      <ul>
+        <li>Couch ships with a PHPMyAdmin-like app called Futon. After CouchDB has started, you should be able to access Futon here: <a href="http://127.0.0.1:5984/_utils/">http://127.0.0.1:5984/_utils/</a>.</li>
+        <li>CouchDB segments data into Databases. In Futon, click "Create Database..." and make a new database with the name "auth".</li>
+        <li>In the auth database, click "New Document" to create a new record in your database.</li>
+        <li>Click on the "Source" Tab, double-click in the source pane and paste this code:
+          <pre class="brush: js">{
+  "username": "admin",
+  "password": "Freedom",
+  "email": "admin@freedom.com"
+}</pre>
+        <li>When finished, click "Save Document" and "auth" in the top bar. You should now see your entry in the database.</li>
+      </ul>
+    </div>
+
+    <div class="slide">
+      <h1>Adding Auth Views</h1>
+      <ul>
+        <li>What we do need to do is setup some views, so in the "View:" select, click "Temporary View...".</li>
+        <li>In order to use our auth database for authentication, we need to create a View that will allow us to query our user documents in the auth database and then filter it by username. So, in the Map Function textarea, paste this function:
+          <pre class="brush: js">function(doc) {
+  emit(doc.username, doc);
+}</pre>
+        </li>
+        <li>Click "Run" to see your document below.</li>
+        <li>Now, add click "Save As..." and enter the name "user" into the Design Document input box and "byUsername" in the View Name input box.</li>
+        <li>We're now ready to use Couch to store our users.</li>
+        <li>Copy <code>app.js</code> from <code>week6/inclass/auth</code> into <code>week6/inclass/auth-couch</code>.</li>
+      </ul>
+    </div>
+
+    <div class="slide">
+      <h1><a href="https://github.com/cloudhead/cradle/">Cradle</a></h1>
+      <ul>
+        <li><a href="https://github.com/cloudhead/cradle/">Cradle</a> is an incredibly useful module for interacting with Couch.</li>
+        <li>What we'll be using is:
+          <ul>
+            <li><code>var conn = new cradle.Connection()</code> to connect to our CouchDB server.</li>
+            <li><code>var db = conn.database('auth')</code> to access our pre-made database.</li>
+            <li><code>db.save()</code> to add new users to our database.</li>
+            <li><code>db.view()</code> to authenticate our users.</li>
+          </ul>
+        </li>
+        <li>Let's dive into <code>week6/inclass/auth-couch/app.js</code>.</li>
+      </ul>
+    </div>
+
+    <div class="slide">
+      <h1><a href="http://en.wikipedia.org/wiki/WebSocket">WebSockets</a></h1>
+      <ul>
+        <li>WebSockets allow for bi-directional communication between a web server and browser.</li>
+        <li>Unlike with Ajax, the web server can push messages to the browser without the browser having to poll.</li>
+        <li>Best of all, WebSockets are full-duplex, meaning a browser can send a message to the web server at the same time the server is sending it a message.</li>
+        <li>In Node, there is a module that makes WebSockets usable in nearly every browser.</li>
+      </ul>
+    </div>
+
+    <div class="slide">
+      <h1><a href="http://socket.io/">Socket.IO</a></h1>
+      <ul>
+        <li>Socket.IO provides the server- and client-side code necessary to enable WebSocket functionality.</li>
+        <li>If a browser doesn't support WebSockets, it uses one of <a href="http://socket.io/#browser-support">many methods</a> get WebSocket-like behavior.</li>
+        <li>In <code>week6/inclass/socket.io/</code>, we'll create an app that broadcasts messages sent from one browser to all other connected browsers.</li>
+      </ul>
+    </div>
+
+    <div class="slide title">
+      <h1>Fin!</h1>
+      <h2><a href="homework.html">Homework</a></h2>
+    </div>
+
+    <div class="layout" data-name="title">
+      <content></content>
+      <div class="footer">
+        <span class="left">Peter Wooley</span>
+        <span class="right">WDIM493J</span>
+        <span class="left">Twitter <a href="http://twitter.com/peterwooley">@peterwooley</a></span>
+        <span class="right"><a href="http://wdim493j.herokuapp.com">Notes online</a> (and <a href="https://github.com/aipd-wdim493j/curriculum">on GitHub</a>)</span>
+        <hr class="defloat" />
+      </div>
+    </div>
+
+    <div class="layout nofooter" data-name="default">
+      <content></content>
+    </div>
+  
+    <!-- Common Scripts -->
+    <script src="../js/jquery.noisy.min.js"></script>
+    <script src="../js/index.js"></script>
+  </body>
+</html>
