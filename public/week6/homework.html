@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+		<title>Assignment 5 &mdash; WDIM493J Node.js</title>
+        <link href="http://fonts.googleapis.com/css?family=Terminal+Dosis+Light:regular&v1" rel="stylesheet" type="text/css" >
+		<link type="text/css" rel="stylesheet" href="../css/common.css" />
+    </head>
+	<body>
+		<div id="header">
+			<h1>WDIM493J Node.js</h1>
+			<p class="tagline">Homework: <em>Assignment 5</em>, due Week 7</p>
+		</div>
+
+		<h2>Socket Control</h2>
+    <p>Using Socket.IO, craft a Node app that allows a user to control a uniquely-colored square with their keyboard, which is then displayed in the browser of all other users.</p>
+    <ul>
+      <li>When a user connects to the app using their browser, a div should be created and placed randomly on the screen with a random color.</li>
+      <li>Using the keyboard (up, down, left, right arrow keys; a,w,s,d; etc.), the user should be able to move the div around the screen.</li>
+      <li>Using Socket.IO, the location and color of the user's div should be visualized on all other connected clients (users of the web app).</li>
+      <li>In the end, if your Node app has six users, then there will be six colored divs in each user's browser. Each one of the divs will be under the control of one of the users.</li>
+      <li>For ease-of-use, consider making it obvious to the user which div is under their control (a thick border, the text "You" in the div, etc.).</li>
+    </ul>
+	</body>
+</html>
