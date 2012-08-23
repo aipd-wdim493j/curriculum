@@ -1,0 +1,140 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+    <title>Week 7 &mdash; WDIM493J Node.js</title>
+    <!-- Slippy core file and dependencies -->
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
+    <script type="text/javascript" src="../lib/slippy/src/jquery.history.js"></script>
+    <script type="text/javascript" src="../lib/slippy/src/slippy.js"></script>
+    <!-- Slippy structural styles -->
+    <link type="text/css" rel="stylesheet" href="../lib/slippy/src/slippy.css"/>
+    <!-- Syntax highlighting core file  -->
+    <script type="text/javascript" src="../lib/slippy/src/highlighter/shCore.js"></script>
+    <!-- Syntax highlighting brushes, remove those you don't need -->
+    <script type="text/javascript" src="../lib/slippy/src/highlighter/shBrushBash.js"></script>
+    <script type="text/javascript" src="../lib/slippy/src/highlighter/shBrushCss.js"></script>
+    <script type="text/javascript" src="../lib/slippy/src/highlighter/shBrushJScript.js"></script>
+    <script type="text/javascript" src="../lib/slippy/src/highlighter/shBrushXml.js"></script>
+    <!-- Syntax highlighting styles-->
+    <link type="text/css" rel="stylesheet" href="../lib/slippy/src/highlighter/shCore.css"/>
+    <link type="text/css" rel="stylesheet" href="../lib/slippy/src/highlighter/shThemeRDark.css"/>
+
+
+    <!-- Common Styles -->
+    <link href="http://fonts.googleapis.com/css?family=Terminal+Dosis+Light:regular&v1" rel="stylesheet" type="text/css" >
+    <link type="text/css" rel="stylesheet" href="../css/slippy-wdim.css" />
+  </head>
+  <body>
+    <div class="slide title" data-layout="title">
+      <h1>Node.js</h1>
+      <h2>Week 7</h2>
+    </div>
+
+    <div class="slide">
+      <h1>Watch Class Remotely</h1>
+      <ul>
+        <li>I'll be using Google+'s Hangouts on Air so you can watch if you're not in class with us. <a href="https://plus.google.com/108001677297689937928/">Find the Live Stream on my Google+ page</a>.</li>
+        <li>After the class is over, you can <a href="http://www.youtube.com/peterwooley">find the recordings on my YouTube page</a>.</li>
+      </ul>
+    </div>
+
+    <div class="slide">
+    	<h1>Nate's CYOA</h1>
+    	<ul>
+    		<li>Nate's CYOA is pretty cool. Let's look at it!</li>
+    	</ul>
+    </div>
+
+    <div class="slide">
+    	<h1>Socket Control</h1>
+    	<ul>
+    		<li>Push your Socket Control homework to either a new repo or <code>public/week6/homework</code>.</li>
+        <li>Email me the location of your homework.</li>
+        <li>We'll look at a couple of them.</li>
+    	</ul>
+    </div>
+
+    <div class="slide">
+    	<h1>Massively-Multiplayer Online Game</h1>
+      <ul>
+        <li>This week, we'll be writing a game client for an MMOG using Socket.IO.</li>
+        <li>The game we'll be writing a client for is called <a href="https://github.com/aipd-wdim493j/otz">Oily T-Zone: A Tank Game</a>.</li>
+        <li>To get started, <a href="https://github.com/aipd-wdim493j/otz">fork the repository</a>, then run this (change the dir and username):
+          <pre class="brush: bash">cd path/to/where/you/want/otz/to/go
+git clone https://github.com/your-username/otz.git</pre>
+        </li>
+    </div>
+
+    <div class="slide">
+    	<h1>How This Will Work</h1>
+      <ul>
+      	<li>The class will be broken up into three Hackathons. During each hackathon, you'll have a goal for your game client.</li>
+        <li>During each hackathon, I'll help people who are working on completing <em>that</em> hackathon. If you move ahead (which is great!), you'll have to wait until last for my help.</li>
+        <li>Inside of <code>otz/docs/</code>, there is documentation on creating an OTZ game client. Let me know where it's insufficient.</li>
+        <li>The start of the game client we'll be using can be found in <code>otz/public/js/otz.js</code>.</li>
+      </ul>
+    </div>
+
+    <div class="slide">
+    	<h1>Move-and-shootathon</h1>
+      <p>Using your own OTZ game server, implement a game client that allows players to move around the game world using their keyboard.</p>
+      <ul>
+        <li>If you haven't already, in <code>otz/</code> run <code>npm install</code>, then run:
+          <pre class="brush: js">node app.js</pre>
+        </li>
+        <li>When the server is up, point your browser to <code><a href="http://localhost:3000">http://localhost:3000</a></code>. You should see the game world and an orange square representing you.</li>
+        <li>Now, edit <code>otz/public/js/otz.js</code> and create the keyboard event handlers to send <code>player-move</code> events to the game server. Refer to the docs for further instruction.</li>
+        <li>Once your player can move, create an additional handler to send the <code>player-shoot</code> event. Refer to the docs for further instruction.</li>
+        <li>Lastly, create a handler to send the <code>player-turn</code> event, so you can aim your gun without moving to another tile.</li>
+        <li>Note that the bare-bones client provides the <a href="https://github.com/keithamus/jwerty">jwerty keyboard event plugin</a> for your convenience.</li>
+      </ul>
+    </div>
+
+    <div class="slide">
+    	<h1>Spriteathon</h1>
+      <p>Using the provided CSS classes and adding your own in <code>otz/public/css/index.css</code>, create sprites, textures and effects for your game client.</p>
+    	<ul>
+    		<li>Create textures for the <code>.grass</code> and <code>.rock</code> world tiles.</li>
+    		<li>Create a sprite to represent your character in <code>.world .you</code>.</li>
+    		<li>Create a sprite (or multiple sprites) to represent other characters in <code>.world .player</code>.</li>
+        <li>Modify the <code>.bullet</code> styles to match your vision of a bullet.</li>
+    	</ul>
+    </div>
+
+    <div class="slide">
+    	<h1>Notifiathon</h1>
+      <p>Whenever an interesting thing happens in the game, notify the user.</p>
+    	<ul>
+    		<li>Use <code>player-joined</code>, <code>player-killed</code>, <code>player-nick-changed</code> and <code>player-quit</code> to notify the user when something interesting happens to players.</li>
+    		<li>Use <code>disconnect</code> and <code>reconnect</code> to tell the user that they've lost the connection to the server and reconnected, respectively. This is also a fine oppurtunity to show a <a href="http://en.wikipedia.org/wiki/Kill_screen">kill screen</a>.</li>
+    		<li>Allow the user to update thir nickname using a text box and sending the <code>player-nick</code> event.</li>
+        <li>Optionally, use the <code>player-*</code> events to create a leaderboard that keeps track of connected players and their kill/death ratio since your character connected.</li>
+    	</ul>
+    </div>
+
+    <div class="slide title">
+      <h1>Final Project</h1>
+      <h2><a href="homework.html" title="Bring It On Again for All or Nothing if we're In It to Win It until our Fight to the Finish">Bring It On</a></h2>
+    </div>
+
+    <div class="layout" data-name="title">
+      <content></content>
+      <div class="footer">
+        <span class="left">Peter Wooley</span>
+        <span class="right">WDIM493J</span>
+        <span class="left">Twitter <a href="http://twitter.com/peterwooley">@peterwooley</a></span>
+        <span class="right"><a href="http://wdim493j.herokuapp.com">Notes online</a> (and <a href="https://github.com/aipd-wdim493j/curriculum">on GitHub</a>)</span>
+        <hr class="defloat" />
+      </div>
+    </div>
+
+    <div class="layout nofooter" data-name="default">
+      <content></content>
+    </div>
+  
+    <!-- Common Scripts -->
+    <script src="../js/jquery.noisy.min.js"></script>
+    <script src="../js/index.js"></script>
+  </body>
+</html>
