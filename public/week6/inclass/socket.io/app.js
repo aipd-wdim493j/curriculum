@@ -27,3 +27,9 @@ server.listen(app.get('port'), function(){
 app.get('/', function(req, res) { res.render('index') });
 
 // Add the Socket.IO code here.
+var io = socketio.listen(server);
+io.on('connection', function(socket) {
+    socket.on('message', function(data) {
+        io.sockets.emit('message', data);
+    });
+});

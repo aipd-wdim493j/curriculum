@@ -7,6 +7,10 @@ var LocalStrategy = require('passport-local').Strategy;
 var flash = require('connect-flash');
 var crypto = require('crypto');
 var async = require('async');
+var cradle = require('cradle');
+
+var conn = new cradle.Connection();
+var db = conn.database('auth');
 
 var app = express();
 
@@ -52,13 +56,11 @@ async.parallel({
 
 // When a user logs in with their username, we need to be able to find the user object. So, here ya go.
 function findByUsername(username, fn) {
-  for (var i = 0, len = users.length; i < len; i++) {
-    var user = users[i];
-    if (user.username === username) {
-      return fn(null, user);
-    }
-  }
-  return fn(null, null);
+    db.view('user/byUsername', {key: username}, function(err, res) {
+        if(err || !res.length) return fn(null, null); 
+        console.log(err, res);
+        fn(null, res[0].value);
+    });
 }
 
 // This is middleware we'll use to make sure an unauthenticated user can get to `/account`.
@@ -158,8 +160,10 @@ app.get('/register', function(req, res) {
 app.post('/register', function(req, res) {
     if(req.body.username && req.body.password && req.body.email) {
         getHash(req.body.password, function(err, hash) {
-            users.push({username: req.body.username, password: hash, email: req.body.email});
-            res.redirect('/login');
+            //users.push({username: req.body.username, password: hash, email: req.body.email});
+            db.save({username: req.body.username, password: hash, email: req.body.email}, function(err, result) {
+                res.redirect('/login');
+            });
         });
     } else {
         req.flash('error', 'You messed up.');

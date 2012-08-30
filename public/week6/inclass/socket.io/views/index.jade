@@ -11,3 +11,11 @@ html
     .messages
   script
     // Add the Socket.IO Client below. 
+    var socket = io.connect(location);
+    socket.on("message", function(data) {
+        $(".messages").prepend($("<div>").text(data.message))
+    });
+    $(".submit").click(function() {
+        socket.emit("message", {message: $(".message").val() });
+        $(".message").val('');
+    });
