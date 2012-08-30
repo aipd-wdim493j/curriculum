@@ -1,6 +1,6 @@
-var request = require('request');
-var cheerio = require('cheerio');
-var argv = require('optimist').argv;
+var request = require('request'),
+       cheerio = require('cheerio'),
+       argv = require('optimist').argv;
 
 console.log(argv);
 console.log("Starting to fetch ALA number.");

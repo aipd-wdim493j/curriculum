@@ -1,0 +1,7 @@
+extends layout
+
+block content
+  h1 Account
+  p Hello, #{user.username}
+  p Your User ID is #{user.id} and your email is #{user.email}
+  a(href='/logout') Logout

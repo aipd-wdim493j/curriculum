@@ -1,7 +1,8 @@
 var fib = require('fib');
+var fib = require('child process'); 
 
-setTimeout(function() {
-  console.log("setTimeout");  
+	setTimeout(function() {
+		colsole.log("setTimeout");
 }, 1000);
 
 console.time("fib");

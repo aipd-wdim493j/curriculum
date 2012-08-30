@@ -1,0 +1,45 @@
+rl.question("[door] or [window]?", function(answer) {
+	  	
+ if(answer == 'door') {
+	  	
+   rl.question("[forward] or [vomit]", function(answer) {
+  	
+     if(answer == 'vomit') {
+	  	
+       rl.question("[window] or go [forward]?", function(answer) {
+	  	
+         if(answer == 'window') {
+	  	
+          console.log("You have died.");
+	  	
+         } else {
+	  	
+           rl.question("[high] or [low]?", function(answer) {
+	  	
+             if(answer == 'high') {
+  	
+               console.log("You have died.");
+	  	
+             }
+	  	
+           });
+	  	
+         }
+	  	
+       });
+	  	
+     } else {
+	  	
+       rl.question("[chicken] or [beef]?", function(answer) {
+	  	
+         if(answer == 'beef') {
+	  	
+           console.log("You have died.");
+	  	
+         }
+	  	
+       });
+	  	
+     }
+  	
+  });

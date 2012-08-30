@@ -1,0 +1,10 @@
+extends layout
+
+block content
+  h1 Home
+  if user
+    p Hello, #{user.username}
+    a(href='/account') Your Account
+  else
+    p Howdy! 
+      a(href='/login') Login

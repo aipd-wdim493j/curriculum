@@ -1,0 +1,22 @@
+extends layout
+
+block content
+  h1 Register
+  if message
+    p= message
+  form(method='post', action='')
+    label(for='username') Username
+    input(id='username', name='username')
+    br
+
+    label(for='email') Email
+    input(id='email', name='email')
+    br
+
+    label(for='password') Password
+    input(id='password', name='password', type='password')
+    br
+
+    input(type='submit') Register
+
+  
